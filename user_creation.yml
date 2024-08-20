@@ -24,7 +24,8 @@
           - Users
           - Remote Desktop Users
         state: present
-      when:  
+      when:
+        - create|default(true)|bool == true  
         - is_administrator|default(false)|bool == false
 
     - name: Create a new administrator user
@@ -37,7 +38,15 @@
           - Remote Desktop Users
         state: present
       when:
+        - create|default(true)|bool == true
         - is_administrator|default(false)|bool == true
+
+    - name: Ensure user  is removed from system
+      ansible.windows.win_user:
+        name: new_user
+        state: absent
+      when:
+        - create|default(true)|bool == false
 
     - name: Genrate Email content to Send in Email
       ansible.builtin.template:
@@ -45,6 +54,8 @@
         dest: /tmp/alert_email.html
       run_once: true  
       delegate_to: 127.0.0.1
+      when:
+         - create|default(true)|bool == true
 
     - name: Send email Alert
       mail:
@@ -60,3 +71,5 @@
       run_once: true  
       delegate_to: 127.0.0.1
       changed_when: True
+      when:
+         - create|default(true)|bool == true
