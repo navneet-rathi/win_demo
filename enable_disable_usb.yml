@@ -1,7 +1,7 @@
 ---
 - name: Disable_Enable USB ports on Windows Operating system
   hosts: Leena-WIn
-  gather_facts: no
+  gather_facts: true
   tasks:
     - name: Check if server are reachable or not
       ansible.windows.win_ping:
