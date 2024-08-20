@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title> User created or Password Updated</title>
+
+</head>
+
+<body>
+
+    <p>Dear Team,</p>
+
+    <p>This is an automated alert to inform you:</p>
+    <p>Passwords are updated on below servers for below server
+    <ul>
+     {% for host in ansible_play_hosts %}
+        <li>{{ host }}</li>
+        <li>{{ new_user }}</li>
+        <li>{{ generated_password }}</li>
+     {% endfor %}
+    </ul>
+
+    <p>Best regards,<br/>{{ awx_user_email }}</p>
+
+</body>
+
+</html>

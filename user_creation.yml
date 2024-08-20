@@ -1,0 +1,60 @@
+---
+- name: Create a user on Windows
+  hosts: Leena-WIn
+  gather_facts: true
+  tasks:
+    - name: Check if server are reachable or not
+      ansible.builtin.ping:
+      register: ping_result
+      
+    - debug:
+        msg: "{{ ping_result }}"   
+  
+    - name: Generate Complex randome password
+      set_fact:
+        generated_password: "{{ lookup('community.general.random_string', length=12, min_lower=1, min_upper=1, min_numeric=1, min_special=1, override_special='-_=+!#$()[]') }}"
+      no_log: true
+
+    - name: Create a new user
+      win_user:
+        name: "{{ new_user }}"
+        password: "{{ generated_password }}"
+        description: "This is a new user"
+        groups:
+          - Users
+        state: present
+      when:  
+        - is_administrator|default(false)|bool == false
+
+    - name: Create a new administrator user
+      win_user:
+        name: "{{ new_user }}"
+        password: "{{ generated_password }}"
+        description: "Administrator user account"
+        groups:
+          - Administrators
+        state: present
+      when:
+        - is_administrator|default(false)|bool == true
+
+    - name: Genrate Email content to Send in Email
+      ansible.builtin.template:
+        src: alert_email_html.j2
+        dest: /tmp/alert_email.html
+      run_once: true  
+      delegate_to: 127.0.0.1
+
+    - name: Send email Alert
+      mail:
+        host: smtp.gmail.com
+        port: 587
+        subtype: html
+        to:
+        - "nrathi@redhat.com"
+        subject: "Alert: Password Changed as per the org policy"
+        body: "{{ lookup('file', '/tmp/alert_email.html') }}"
+        username: "{{ lookup('hashi_vault', 'secret=secret/data/dev/email:user') }}"
+        password: "{{ lookup('hashi_vault', 'secret=secret/data/dev/email:pass') }}"
+      run_once: true  
+      delegate_to: 127.0.0.1
+      changed_when: True
