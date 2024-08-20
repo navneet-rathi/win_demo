@@ -12,7 +12,7 @@
           
     - name: Disable USB storage devices
       win_regedit:
-        path: HKLM\SYSTEM\CurrentControlSet\Services\USBSTOR
+        path: HKLM:\SYSTEM\CurrentControlSet\Services\USBSTOR
         name: Start
         data: 4
         type: dword
@@ -22,7 +22,7 @@
 
     - name: Enable USB storage devices
       win_regedit:
-        path: HKLM\SYSTEM\CurrentControlSet\Services\USBSTOR
+        path: HKLM:\SYSTEM\CurrentControlSet\Services\USBSTOR
         name: Start
         data: 3
         type: dword
