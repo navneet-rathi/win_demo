@@ -43,7 +43,7 @@
 
     - name: Ensure user  is removed from system
       ansible.windows.win_user:
-        name: new_user
+        name: "{{ new_user }}"
         state: absent
       when:
         - create|default(true)|bool == false
