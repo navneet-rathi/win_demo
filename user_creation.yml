@@ -22,6 +22,7 @@
         description: "This is a new user"
         groups:
           - Users
+          - Remote Desktop Users
         state: present
       when:  
         - is_administrator|default(false)|bool == false
@@ -33,6 +34,7 @@
         description: "Administrator user account"
         groups:
           - Administrators
+          - Remote Desktop Users
         state: present
       when:
         - is_administrator|default(false)|bool == true
