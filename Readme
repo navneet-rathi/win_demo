@@ -1,1 +1,4 @@
 
+This repo have some ansible automation use cases
+1. user creation and delection
+2. enable usb from windows machines
