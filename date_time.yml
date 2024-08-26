@@ -1,0 +1,76 @@
+- name: Get date and format it
+  hosts: localhost
+  tasks:
+    - name: Set the current date
+      set_fact:
+        current_date: "{{ ansible_date_time.iso8601 }}"
+
+    - name: Format the date
+      set_fact:
+        formatted_date: "{{ current_date | strftime('%Y-%m-%d') }}"
+
+    - name: Display the formatted date
+      debug:
+        msg: "Formatted date is {{ formatted_date }}"        
+
+    - name: Calculate yesterday's date
+      set_fact:
+        yesterdays_date: "{{ (current_date | to_datetime | timedelta(days=-1)) | strftime('%Y-%m-%d') }}"
+
+    - name: Display yesterday's date
+      debug:
+        msg: "Yesterday's date was {{ yesterdays_date }}"
+
+    - name: Format the date
+      set_fact:
+        formatted_month_date: "{{ current_date | to_datetime | strftime('%-d-%b-%Y') }}"
+
+    - name: Display the formatted date
+      debug:
+        msg: "Formatted date is {{ formatted_month_date }}" 
+
+    - name: Upload file via SFTP
+      community.general.sftp:
+        src: /path/to/local/file.txt
+        dest: /remote/path/on/sftp/server/
+        host: sftp.example.com
+        port: 22
+        username: your_username
+        password: your_password
+
+    - name: Check if the file exists on the SFTP server
+      community.general.sftp:
+        command: ls
+        path: /remote/path/on/sftp/server/file.txt
+        host: sftp.example.com
+        port: 22
+        username: your_username
+        password: your_password
+      register: sftp_ls
+
+    - name: Verify the file is present
+      debug:
+        msg: "File uploaded successfully"
+      when: sftp_ls.path == '/remote/path/on/sftp/server/file.txt'
+
+    - name: Genrate Email content to Send in Email
+      ansible.builtin.template:
+        src: info_email_html.j2
+        dest: /tmp/info_email.html
+      run_once: true  
+      delegate_to: 127.0.0.1      
+
+    - name: Send email Alert to 
+      mail:
+        host: smtp.gmail.com
+        port: 587
+        subtype: html
+        to:
+        - "nrathi@redhat.com"
+        subject: "Info : Avidance gathring if required.."
+        body: "{{ lookup('file', '/tmp/alert_email.html') }}"
+        username: "{{ lookup('hashi_vault', 'secret=secret/data/dev/email:user') }}"
+        password: "{{ lookup('hashi_vault', 'secret=secret/data/dev/email:pass') }}"
+      run_once: true  
+      delegate_to: 127.0.0.1
+      changed_when: True      

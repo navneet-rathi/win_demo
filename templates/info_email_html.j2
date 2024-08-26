@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title> Email showing the avidance file uploaded successfully on server</title>
+
+</head>
+
+<body>
+
+    <p>Dear Team,</p>
+
+    <p>This is an automated alert to inform you:</p>
+    <p>File is successfullt uploaded
+    <ul>
+     {% for host in ansible_play_hosts %}
+        <li> {{ sftp_ls }}</li>
+       
+     {% endfor %}
+    </ul>
+
+    <p>Best regards,<br/>{{ awx_user_email }}</p>
+
+</body>
+
+</html>

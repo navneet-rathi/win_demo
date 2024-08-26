@@ -1,0 +1,10 @@
+---
+- name: doing a task
+  hosts: all
+  tasks:
+    - name: delegate to with loop 
+      shell: ifconfig
+      delegate_to: "{{ item }}"
+      loop:
+        - localhost
+        -  centos

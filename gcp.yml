@@ -1,0 +1,87 @@
+- name: Unregister RHEL VM from RHSM
+  hosts: rhel_vm
+  tasks:
+    - name: Remove all subscriptions
+      command: subscription-manager remove --all
+      ignore_errors: yes
+
+    - name: Unregister the system
+      command: subscription-manager unregister
+      ignore_errors: yes
+
+    - name: Clean RHSM configuration
+      command: subscription-manager clean
+      ignore_errors: yes
+
+
+- name: Retrieve Disks of a Google Cloud Instance
+  hosts: localhost
+  gather_facts: no
+  tasks:
+    - name: Get details of the instance
+      gcp_compute_instance_info:
+        project: "your-gcp-project-id"
+        zone: "us-central1-a"
+        auth_kind: serviceaccount
+        service_account_file: "/path/to/your/service-account.json"
+        name: "instance-name"
+      register: instance_info
+
+    - name: Display attached disks
+      debug:
+        msg: "{{ instance_info.resources[0].disks }}"
+
+    - name: Generate Complex randome password
+      set_fact:
+        your-existing-rhel-disk: "{{ instance_info.resources[0].disks }}"
+
+    - name: Create image from existing RHEL VM
+      gcp_compute_image:
+        name: "rhel-byol-image"
+        source_disk: "your-existing-rhel-disk"
+        source_disk_zone: "us-central1-a"
+        family: "rhel-byol"
+        project: "your-gcp-project-id"
+        auth_kind: serviceaccount
+        service_account_file: "/path/to/your/service-account.json"
+
+    - name: Launch a new RHEL BYOL instance
+      gcp_compute_instance:
+        name: "rhel-byol-instance-{{ item }}"
+        machine_type: "n1-standard-1"
+        zone: "us-central1-a"
+        image_family: "rhel-byol"
+        image_project: "your-gcp-project-id"
+        network_interfaces:
+          - network: "default"
+            access_configs:
+              - name: "External NAT"
+                type: "ONE_TO_ONE_NAT"
+        project: "your-gcp-project-id"
+        auth_kind: serviceaccount
+        service_account_file: "/path/to/your/service-account.json"
+
+
+
+- name: Post-deployment configuration
+  hosts: rhel_byol_instances
+  tasks:
+    - name: Register the instance with RHSM
+      command: subscription-manager register --username <username> --password <password>
+      ignore_errors: yes
+
+    - name: Auto-attach available subscriptions
+      command: subscription-manager attach --auto
+      ignore_errors: yes
+
+    - name: Update all packages
+      yum:
+        name: '*'
+        state: latest
+
+    - name: Reboot the system if needed
+      reboot:
+        msg: "Rebooting after updates"
+        connect_timeout: 5
+        reboot_timeout: 600
+
