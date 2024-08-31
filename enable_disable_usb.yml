@@ -1,6 +1,6 @@
 ---
 - name: Disable_Enable USB ports on Windows Operating system
-  hosts: Leena-WIn
+  hosts: all
   gather_facts: true
   tasks:
     - name: Check if server are reachable or not
