@@ -1,0 +1,7 @@
+---
+users:
+  - host: 
+    username:
+  - host:
+    username:  
+### This way we can have a long mapping of host and users for which we want to rotate the pass    

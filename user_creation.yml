@@ -2,6 +2,7 @@
 - name: Create a user on Windows
   hosts: all
   gather_facts: true
+  vars_files: users.yml
   tasks:
     - name: Check if server are reachable or not
       ansible.windows.win_ping:
