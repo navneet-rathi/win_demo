@@ -59,6 +59,10 @@
       ansible.builtin.shell: echo "{{inventory_hostname}},{{new_user}},{{ generated_password }}" >> "/tmp/pass/{{inventory_hostname}}"
       delegate_to: localhost
 
+    - name: For debuging
+      ansible.builtin.shell: "ls -la /tmp/pass"
+      delegate_to: localhost   
+
 - name: Genrate Template and send email
   hosts: localhost
   gather_facts: true
