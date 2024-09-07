@@ -2,18 +2,19 @@
 - name: Disable_Enable USB ports on Windows Operating system
   hosts: all
   gather_facts: true
-  vars:
-    usb_allow_list:
-      - 'PCI\VEN_8086&DEV_9C31&SUBSYS_397817AA&REV_04\3&11583659&0&A0'  
-      # Replace with actual Hardware ID
+    #  runas: true  
+    #  vars:
+    #usb_allow_list:
+    #   - 'USB\ROOT_HUB30\4&2B8754FF&0&0'  
+    # Replace with actual Hardware ID
   tasks:
     - name: Check if server are reachable or not
       ansible.windows.win_ping:
       register: ping_result
-      
-    - debug:
-        msg: "{{ ping_result }}"   
-          
+
+   # - debug:
+   #     msg: "{{ ping_result }}"
+
     - name: Disable USB storage devices
       win_regedit:
         path: HKLM:\SYSTEM\CurrentControlSet\Services\USBSTOR
@@ -21,30 +22,24 @@
         data: 4
         type: dword
         state: present
-      when:  
-        - usb_disable|default(true)|bool == true
-
-    - name: Create or update whitelist for allowed USB devices
-      win_regedit:
-        path: HKLM:\SYSTEM\CurrentControlSet\Enum\USB\{{ item }}
-        name: "Allow"
-        value: 1
-        datatype: dword
-      with_items: "{{ usb_allow_list }}"
-      become: yes
-      when:  
+      register: usb_dis
+      when:
         - usb_disable|default(true)|bool == true
 
     - name: Enable USB storage devices
+      register: usb_en
       win_regedit:
         path: HKLM:\SYSTEM\CurrentControlSet\Services\USBSTOR
         name: Start
         data: 3
         type: dword
         state: present
-      when:  
-        - usb_disable|default(true)|bool == false     
+      when:
+        - usb_disable|default(true)|bool == false
 
+    - ansible.builtin.debug:
+        msg: "{{ usb_en }} {{usb_dis}}"
     - name: Reboot system after whitelisting USB device (if required)
       win_reboot:
-        reboot_timeout: 60                   
+        reboot_timeout: 120
+      when: usb_en.changed or usb_dis.changed
