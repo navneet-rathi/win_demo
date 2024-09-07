@@ -61,8 +61,15 @@
     <p>Dear Team,</p>
 
     <p>This is an automated alert to inform you:</p>
-    <p>Passwords are updated on below servers for below server
-
+    <p>Passwords are updated on below servers for below users
+    <ul>
+     {% for host in passdata.list %}
+ 
+        <li> host: {{ host.host }}</li>
+        <li>username: {{ host.username }}</li>
+        <li>password: {{ host.generated_password }}</li>
+     {% endfor %}
+    </ul>
     <table>
       <tr>
         <th>Host</th>
