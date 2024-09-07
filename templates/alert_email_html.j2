@@ -20,8 +20,10 @@
     <p>Passwords are updated on below servers for below server
     <ul>
      {% for host in passdata.list %}
-       {{ host }}
-
+ 
+        <li> host: {{ host.host }}</li>
+        <li>username: {{ host.username }}</li>
+        <li>password: {{ host.generated_password }}</li>
      {% endfor %}
     </ul>
 
