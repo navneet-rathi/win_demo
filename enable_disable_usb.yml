@@ -39,7 +39,7 @@
 
     - name: Enable USB storage devices for specific device IDs (Modify with actual device ID)
       win_regedit:
-        path: HKLM:\SYSTEM\CurrentControlSet\Enum\USB\USB\VID_346D&PID_5678\5861741057040343248\Device Parameters
+        path: HKLM:\SYSTEM\CurrentControlSet\Enum\USB\VID_346D&PID_5678\5861741057040343248\Device Parameters
         name: Start
         data: 3
         type: dword
