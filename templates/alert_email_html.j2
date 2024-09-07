@@ -19,10 +19,10 @@
     <p>This is an automated alert to inform you:</p>
     <p>Passwords are updated on below servers for below server
     <ul>
-     {% for host in ansible_play_hosts %}
-        <li> host: {{ host }}</li>
-        <li>username: {{ new_user }}</li>
-        <li>password: {{ generated_password }}</li>
+     {% for host in passdata %}
+        <li> host: {{ item.host }}</li>
+        <li>username: {{ item.new_user }}</li>
+        <li>password: {{ item.generated_password }}</li>
      {% endfor %}
     </ul>
 

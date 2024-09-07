@@ -48,17 +48,35 @@
       when:
         - create|default(true)|bool == false
 
-    - name: Create a directory if it does not exist
+    - name: Create a directory if it does not exist for pass
       ansible.builtin.file:
         path: /tmp/pass
         state: directory
         mode: '0755'
+      delegate_to: localhost
 
-    - name:     
+    - name: Genrate a CSV file
+      ansible.builtin.shell: echo "{{host}},{{new_user}},{{ generated_password }}" >> "/tmp/{{inventory_hostname}}"
+      delegate_to: localhost
+
 - name: Genrate Template and send email
   hosts: localhost
   gather_facts: true
   tasks:
+    - name: Assemble from fragments from a directory
+      ansible.builtin.assemble:
+        src: /tmp/pass
+        dest: /tmp/pass.txt
+      delegate_to: localhost
+
+    - name: Read users from CSV file and return a list
+      community.general.read_csv:
+        path: /tmp/pass.txt
+        fieldnames: host,username,generated_password
+        delimiter: ','
+      register: passdata
+      delegate_to: localhost
+
     - name: Genrate Email content to Send in Email
       ansible.builtin.template:
         src: alert_email_html.j2
@@ -66,7 +84,7 @@
       run_once: true  
       delegate_to: 127.0.0.1
       when:
-         - create|default(true)|bool == true
+         - create|default(true)|bool == true     
 
     - name: Send email Alert
       mail:
