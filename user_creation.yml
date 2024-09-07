@@ -56,7 +56,7 @@
       delegate_to: localhost
 
     - name: Genrate a CSV file
-      ansible.builtin.shell: echo "{{host}},{{new_user}},{{ generated_password }}" >> "/tmp/{{inventory_hostname}}"
+      ansible.builtin.shell: echo "{{inventory_hostname}},{{new_user}},{{ generated_password }}" >> "/tmp/{{inventory_hostname}}"
       delegate_to: localhost
 
 - name: Genrate Template and send email
