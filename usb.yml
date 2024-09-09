@@ -4,20 +4,20 @@
   gather_facts: no
   tasks:
 
-    - name: Disable all USB devices
-      win_shell: |
-        Get-WmiObject -Query "SELECT * FROM Win32_PnPEntity WHERE PNPClass = 'USB'" |
-        ForEach-Object { $_.Disable() }
+#    - name: Disable all USB devices
+#      win_shell: |
+#        Get-WmiObject -Query "SELECT * FROM Win32_PnPEntity WHERE PNPClass = 'USB'" |
+#        ForEach-Object { $_.Disable() }
 
-    - name: Enable specific USB device based on Device ID (replace DEVICE_ID)
-      win_shell: |
-        Get-WmiObject -Query "SELECT * FROM Win32_PnPEntity WHERE DeviceID = 'DEVICE_ID'" |
-        ForEach-Object { $_.Enable() }
+#    - name: Enable specific USB device based on Device ID (replace DEVICE_ID)
+#      win_shell: |
+#        Get-WmiObject -Query "SELECT * FROM Win32_PnPEntity WHERE DeviceID = 'DEVICE_ID'" |
+#        ForEach-Object { $_.Enable() }
 
-    - name: Enable specific USB devices by Hardware ID (replace with actual Hardware ID)
-      win_shell: |
-        Get-WmiObject -Query "SELECT * FROM Win32_PnPEntity WHERE HardwareID LIKE 'USB\\VID_XXXX&PID_YYYY'" |
-        ForEach-Object { $_.Enable() }
+#    - name: Enable specific USB devices by Hardware ID (replace with actual Hardware ID)
+#      win_shell: |
+#        Get-WmiObject -Query "SELECT * FROM Win32_PnPEntity WHERE HardwareID LIKE 'USB\\VID_XXXX&PID_YYYY'" |
+#        ForEach-Object { $_.Enable() }
 
     - name: Show all USB devices (optional)
       win_shell: |
