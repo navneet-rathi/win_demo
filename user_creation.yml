@@ -8,8 +8,18 @@
       ansible.windows.win_ping:
       register: ping_result
       
-    - debug:
-        msg: "{{ ping_result }}"
+    - name: Set Enforce password history to 24 or more passwords 
+      win_command: net accounts /uniquepw:24
+      register: passHistory
+      args:
+        creates: C:\passHistory.lock
+
+    - name: Create passHistory.lock if password history is enforced
+      win_copy:
+        dest: C:\passHistory.lock
+        content: ""
+        force: no
+      when: passHistory
 
     - name: Generate Complex randome password
       set_fact:
