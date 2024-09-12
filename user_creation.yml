@@ -11,13 +11,6 @@
     - debug:
         msg: "{{ ping_result }}"
 
-    - name: Enforce password history | disallow reuse of the last 50 passwords)
-      win_group_policy:
-        section: machine
-        option: Enforce password history
-        policy_name: Password Policy
-        policy_value: 50           
-  
     - name: Generate Complex randome password
       set_fact:
         generated_password: "{{ lookup('community.general.random_string', length=12, min_lower=1, min_upper=1, min_numeric=1, min_special=1, override_special='-_=+!#$()[]') }}"
