@@ -1,21 +1,24 @@
 
 - name: Set account lockout threshold to 3 failed attempts
-  win_powershell: |
-    secedit /export /cfg C:\Windows\Temp\secpol.cfg
-    (Get-Content C:\Windows\Temp\secpol.cfg).replace("LockoutBadCount = 0", "LockoutBadCount = 3") | Set-Content C:\Windows\Temp\secpol.cfg
-    secedit /configure /db secedit.sdb /cfg C:\Windows\Temp\secpol.cfg
+  ansible.windows.win_powershell: 
+    script: |
+      secedit /export /cfg C:\Windows\Temp\secpol.cfg
+      (Get-Content C:\Windows\Temp\secpol.cfg).replace("LockoutBadCount = 0", "LockoutBadCount = 3") | Set-Content C:\Windows\Temp\secpol.cfg
+      secedit /configure /db secedit.sdb /cfg C:\Windows\Temp\secpol.cfg
 
 - name: Set account lockout duration to 10 minutes
-  win_powershell: |
-    secedit /export /cfg C:\Windows\Temp\secpol.cfg
-    (Get-Content C:\Windows\Temp\secpol.cfg).replace("LockoutDuration = 0", "LockoutDuration = 10") | Set-Content C:\Windows\Temp\secpol.cfg
-    secedit /configure /db secedit.sdb /cfg C:\Windows\Temp\secpol.cfg
+  ansible.windows.win_powershell: 
+    script: |
+      secedit /export /cfg C:\Windows\Temp\secpol.cfg
+      (Get-Content C:\Windows\Temp\secpol.cfg).replace("LockoutDuration = 0", "LockoutDuration = 10") | Set-Content C:\Windows\Temp\secpol.cfg
+      secedit /configure /db secedit.sdb /cfg C:\Windows\Temp\secpol.cfg
 
 - name: Set reset lockout counter after 10 minutes
-  win_powershell: |
-    secedit /export /cfg C:\Windows\Temp\secpol.cfg
-    (Get-Content C:\Windows\Temp\secpol.cfg).replace("ResetLockoutCount = 0", "ResetLockoutCount = 10") | Set-Content C:\Windows\Temp\secpol.cfg
-    secedit /configure /db secedit.sdb /cfg C:\Windows\Temp\secpol.cfg
+  ansible.windows.win_powershell: 
+    script: |
+      secedit /export /cfg C:\Windows\Temp\secpol.cfg
+      (Get-Content C:\Windows\Temp\secpol.cfg).replace("ResetLockoutCount = 0", "ResetLockoutCount = 10") | Set-Content C:\Windows\Temp\secpol.cfg
+      secedit /configure /db secedit.sdb /cfg C:\Windows\Temp\secpol.cfg
 
 - name: Cleanup temporary security policy file
   win_file:
