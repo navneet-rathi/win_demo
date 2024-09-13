@@ -47,7 +47,7 @@
         - create|default(true)|bool == true
         - is_administrator|default(false)|bool == true
 
-    - name: Ensure user  is removed from system
+    - name: Ensure user is removed from system
       ansible.windows.win_user:
         name: "{{ new_user }}"
         state: absent
@@ -61,13 +61,13 @@
         mode: '0755'
       delegate_to: localhost
 
-    - name: Genrate a CSV file
+    - name: Genrate a CSV file for "{{ inventory_hostname }}"
       ansible.builtin.shell: echo "{{inventory_hostname}},{{new_user}},{{ generated_password }}" >> "/tmp/pass/{{inventory_hostname}}"
       delegate_to: localhost
 
-    - name: For debuging
-      ansible.builtin.shell: "ls -la /tmp/pass"
-      delegate_to: localhost   
+   # - name: For debuging
+   #   ansible.builtin.shell: "ls -la /tmp/pass"
+   #   delegate_to: localhost   
 
 - name: Genrate Template and send email
   hosts: localhost
