@@ -2,11 +2,6 @@
 - name: Disable_Enable USB ports on Windows Operating system
   hosts: all
   gather_facts: true
-    #  runas: true  
-  vars:
-    usb_allow_list:
-       - 'USB\ROOT_HUB30\4&2B8754FF&0&0'  
-    # Replace with actual Hardware ID
   tasks:
     - name: Check if server are reachable or not
       ansible.windows.win_ping:
