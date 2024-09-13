@@ -10,14 +10,14 @@
   ansible.windows.win_powershell: 
     script: |
       secedit /export /cfg C:\Windows\Temp\secpol.cfg
-      (Get-Content C:\Windows\Temp\secpol.cfg).replace("LockoutDuration = 0", "LockoutDuration = 10") | Set-Content C:\Windows\Temp\secpol.cfg
+      (Get-Content C:\Windows\Temp\secpol.cfg).replace("LockoutDuration = 30", "LockoutDuration = 10") | Set-Content C:\Windows\Temp\secpol.cfg
       secedit /configure /db secedit.sdb /cfg C:\Windows\Temp\secpol.cfg
 
 - name: Set reset lockout counter after 10 minutes
   ansible.windows.win_powershell: 
     script: |
       secedit /export /cfg C:\Windows\Temp\secpol.cfg
-      (Get-Content C:\Windows\Temp\secpol.cfg).replace("ResetLockoutCount = 0", "ResetLockoutCount = 10") | Set-Content C:\Windows\Temp\secpol.cfg
+      (Get-Content C:\Windows\Temp\secpol.cfg).replace("ResetLockoutCount = 30", "ResetLockoutCount = 10") | Set-Content C:\Windows\Temp\secpol.cfg
       secedit /configure /db secedit.sdb /cfg C:\Windows\Temp\secpol.cfg
 
 - name: Cleanup temporary security policy file
