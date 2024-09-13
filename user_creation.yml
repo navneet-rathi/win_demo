@@ -8,22 +8,12 @@
       ansible.windows.win_ping:
       register: ping_result
       
-    - name: Set Enforce password history to 24 or more passwords 
-      win_command: net accounts /uniquepw:24
-      register: passHistory
-      args:
-        creates: C:\passHistory.lock
-
-    - name: Create passHistory.lock if password history is enforced
-      win_copy:
-        dest: C:\passHistory.lock
-        content: ""
-        force: no
-      when: passHistory
+    - name: Make Changes to Windows for Password Complaince 
+      ansible.builtin.include_tasks: password.yml
 
     - name: Generate Complex randome password
       set_fact:
-        generated_password: "{{ lookup('community.general.random_string', length=12, min_lower=1, min_upper=1, min_numeric=1, min_special=1, override_special='-_=+!#$()[]') }}"
+        generated_password: "{{ lookup('community.general.random_string', length=14, min_lower=1, min_upper=1, min_numeric=1, min_special=1, override_special='-_=+!#$()[]') }}"
       no_log: true
 
     - name: Create a new user
