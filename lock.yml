@@ -1,26 +1,38 @@
+- name: Set user lockout after 3 attempt 
+  win_command: net accounts /lockoutthreshold:5
+  register: userLockout
+  args:
+    creates: C:\userLockout.lock
 
-- name: Set account lockout threshold to 3 failed attempts
-  ansible.windows.win_powershell: 
-    script: |
-      secedit /export /cfg C:\Windows\Temp\secpol.cfg
-      (Get-Content C:\Windows\Temp\secpol.cfg).replace("LockoutBadCount = 0", "LockoutBadCount = 3") | Set-Content C:\Windows\Temp\secpol.cfg
-      secedit /configure /db secedit.sdb /cfg C:\Windows\Temp\secpol.cfg
+- name: Create userLockout.lock 
+  win_copy:
+    dest: C:\userLockout.lock
+    content: ""
+    force: no
+  when: userLockout
 
-- name: Set account lockout duration to 10 minutes
-  ansible.windows.win_powershell: 
-    script: |
-      secedit /export /cfg C:\Windows\Temp\secpol.cfg
-      (Get-Content C:\Windows\Temp\secpol.cfg).replace("LockoutDuration = 30", "LockoutDuration = 10") | Set-Content C:\Windows\Temp\secpol.cfg
-      secedit /configure /db secedit.sdb /cfg C:\Windows\Temp\secpol.cfg
+- name: Set lockout duration to 10 min  
+  win_command: net accounts /lockoutduration:10
+  register: lockduration
+  args:
+    creates: C:\lockduration.lock
 
-- name: Set reset lockout counter after 10 minutes
-  ansible.windows.win_powershell: 
-    script: |
-      secedit /export /cfg C:\Windows\Temp\secpol.cfg
-      (Get-Content C:\Windows\Temp\secpol.cfg).replace("ResetLockoutCount = 30", "ResetLockoutCount = 10") | Set-Content C:\Windows\Temp\secpol.cfg
-      secedit /configure /db secedit.sdb /cfg C:\Windows\Temp\secpol.cfg
+- name: Create lockduration.lock 
+  win_copy:
+    dest: C:\lockduration.lock
+    content: ""
+    force: no
+  when: lockduration
 
-- name: Cleanup temporary security policy file
-  win_file:
-    path: C:\Windows\Temp\secpol.cfg
-    state: absent
+- name: Set reset the lockout timeout adter 
+  win_command: net accounts /lockoutwindow:20
+  register: lockoutwindow
+  args:
+    creates: C:\lockoutwindow.lock
+
+- name: Create lockoutwindow.lock 
+  win_copy:
+    dest: C:\lockoutwindow.lock
+    content: ""
+    force: no
+  when: lockoutwindow
