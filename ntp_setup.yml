@@ -1,46 +1,47 @@
 ---
-- name: Set up NTP server on CentOS
+- name: Set up NTP server on RHEL 9 using Chrony
   hosts: all
   become: yes
   tasks:
 
-    - name: Install NTP package
+    - name: Install chrony package
       yum:
-        name: ntp
+        name: chrony
         state: present
 
-    - name: Configure NTP server
+    - name: Configure chrony as an NTP server
       copy:
-        dest: /etc/ntp.conf
+        dest: /etc/chrony.conf
         content: |
-          driftfile /var/lib/ntp/drift
-          restrict default nomodify notrap nopeer noquery
-          restrict -6 default nomodify notrap nopeer noquery
-          restrict 127.0.0.1
-          restrict ::1
-          
-          # NTP Servers
-          server 0.centos.pool.ntp.org iburst
-          server 1.centos.pool.ntp.org iburst
-          server 2.centos.pool.ntp.org iburst
-          server 3.centos.pool.ntp.org iburst
-          
-          # Allow LAN clients (adjust to your subnet)
-          restrict 192.168.1.0 mask 255.255.255.0 nomodify notrap
+          # Use the default CentOS pool servers
+          pool 2.centos.pool.ntp.org iburst
 
-          # Enable logging
-          logfile /var/log/ntpd.log
+          # Allow NTP client access from the local network
+          allow 192.168.1.0/24
+
+          # Serve time even if not synchronized to any NTP server
+          local stratum 10
+
+          # Specify log file
+          logdir /var/log/chrony
+
+          # Dump measurements when chronyd exits
+          dumpdir /var/lib/chrony
+
+          # Save drift file
+          driftfile /var/lib/chrony/drift
+
       notify:
-        - restart ntpd
+        - restart chronyd
 
-    - name: Enable and start NTP service
+    - name: Enable and start chronyd service
       systemd:
-        name: ntpd
+        name: chronyd
         enabled: yes
         state: started
 
   handlers:
-    - name: restart ntpd
+    - name: restart chronyd
       systemd:
-        name: ntpd
+        name: chronyd
         state: restarted

@@ -1,0 +1,46 @@
+---
+- name: Set up NTP server on CentOS
+  hosts: all
+  become: yes
+  tasks:
+
+    - name: Install NTP package
+      yum:
+        name: ntp
+        state: present
+
+    - name: Configure NTP server
+      copy:
+        dest: /etc/ntp.conf
+        content: |
+          driftfile /var/lib/ntp/drift
+          restrict default nomodify notrap nopeer noquery
+          restrict -6 default nomodify notrap nopeer noquery
+          restrict 127.0.0.1
+          restrict ::1
+          
+          # NTP Servers
+          server 0.centos.pool.ntp.org iburst
+          server 1.centos.pool.ntp.org iburst
+          server 2.centos.pool.ntp.org iburst
+          server 3.centos.pool.ntp.org iburst
+          
+          # Allow LAN clients (adjust to your subnet)
+          restrict 192.168.1.0 mask 255.255.255.0 nomodify notrap
+
+          # Enable logging
+          logfile /var/log/ntpd.log
+      notify:
+        - restart ntpd
+
+    - name: Enable and start NTP service
+      systemd:
+        name: ntpd
+        enabled: yes
+        state: started
+
+  handlers:
+    - name: restart ntpd
+      systemd:
+        name: ntpd
+        state: restarted
