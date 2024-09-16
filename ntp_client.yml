@@ -4,10 +4,10 @@
   #become: yes
   tasks:
 
-    - name: Install NTP service
-      win_feature:
-        name: NTP
-        state: present
+   # - name: Install NTP service
+   #   win_feature:
+   #     name: NTP
+   #     state: present
 
     - name: Configure NTP server
       copy:
@@ -26,10 +26,10 @@
         - restart w32time
 
   handlers:
-    - name: restart ntpd
-      win_service:
-        name: ntpd
-        state: restarted
+   # - name: restart ntpd
+   #   win_service:
+   #     name: ntpd
+   #     state: restarted
 
     - name: restart w32time
       win_service:
