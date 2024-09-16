@@ -13,6 +13,8 @@
 
     - name: Lockout user for 10 min for 3 wrong attempt for win7
       ansible.builtin.include_tasks: lock.yml
+      when:
+        - lock|default(false)|bool == true  
 
     - name: Generate Complex randome password
       set_fact:
