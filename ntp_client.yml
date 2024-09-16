@@ -1,0 +1,37 @@
+---
+- name: Configure NTP server on Windows and synchronize time
+  hosts:  all
+  become: yes
+  tasks:
+
+    - name: Install NTP service
+      win_feature:
+        name: NTP
+        state: present
+
+    - name: Configure NTP server
+      copy:
+        dest: C:\Windows\System32\drivers\etc\hosts
+        content: |
+          192.168.1.15   ntpserver.local
+      notify:
+        - restart ntpd
+
+    - name: Synchronize time with NTP server
+      win_powershell:
+        script: |
+          w32tm /config /manualpeerlist:"ntpserver.local" /syncfromflags:manual /reliable:YES
+          w32tm /resync
+      notify:
+        - restart w32time
+
+  handlers:
+    - name: restart ntpd
+      win_service:
+        name: ntpd
+        state: restarted
+
+    - name: restart w32time
+      win_service:
+        name: w32time
+        state: restarted
