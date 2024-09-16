@@ -18,7 +18,7 @@
         - restart ntpd
 
     - name: Synchronize time with NTP server
-      win_powershell:
+      ansible.windows.win_powershell: 
         script: |
           w32tm /config /manualpeerlist:"ntpserver.local" /syncfromflags:manual /reliable:YES
           w32tm /resync
