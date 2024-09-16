@@ -14,8 +14,8 @@
         dest: C:\Windows\System32\drivers\etc\hosts
         content: |
           192.168.1.15   ntpserver.local
-      notify:
-        - restart ntpd
+     # notify:
+     #   - restart ntpd
 
     - name: Synchronize time with NTP server
       ansible.windows.win_powershell: 
