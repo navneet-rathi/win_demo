@@ -1,6 +1,6 @@
 ---
 - name: Set up NTP server on CentOS
-  hosts: centos_servers
+  hosts: all
   become: yes
   tasks:
 
