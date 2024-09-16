@@ -1,5 +1,5 @@
 - name: Set user lockout after 3 attempt 
-  win_command: net accounts /lockoutthreshold:5
+  win_command: net accounts /lockoutthreshold:3
   register: userLockout
   args:
     creates: C:\userLockout.lock
@@ -12,7 +12,7 @@
   when: userLockout
 
 - name: Set lockout duration to 10 min  
-  win_command: net accounts /lockoutduration:10
+  win_command: net accounts /lockoutduration:20
   register: lockduration
   args:
     creates: C:\lockduration.lock
