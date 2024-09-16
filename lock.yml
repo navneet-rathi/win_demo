@@ -12,7 +12,7 @@
   when: userLockout
 
 - name: Set lockout duration to 10 min  
-  win_command: net accounts /lockoutduration:20
+  win_command: net accounts /lockoutduration:10
   register: lockduration
   args:
     creates: C:\lockduration.lock
@@ -25,7 +25,7 @@
   when: lockduration
 
 - name: Set reset the lockout timeout adter 
-  win_command: net accounts /lockoutwindow:20
+  win_command: net accounts /lockoutwindow:10
   register: lockoutwindow
   args:
     creates: C:\lockoutwindow.lock
