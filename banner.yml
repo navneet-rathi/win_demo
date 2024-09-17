@@ -7,7 +7,7 @@
         path: HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System
         name: LegalNoticeCaption
         data: "Authorized Access"
-        type: REG_SZ
+        type: String
       register: title
 
     - name: Set banner text (body) for Windows 7
@@ -15,7 +15,7 @@
         path: HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System
         name: LegalNoticeText
         data: "This is a secure system of JSW steel india ltd. Unauthorized access is prohibited.This system is under the servelance and any auauthorized access will be reported"
-        type: REG_SZ
+        type: String
       register: content  
 
     - name: Reboot the machine
