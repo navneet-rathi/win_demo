@@ -1,0 +1,24 @@
+---
+- name: Set Windows 7 Login Banner
+  hosts: all
+  tasks:
+    - name: Set banner caption (title) for Windows 7
+      ansible.windows.win_regedit:
+        path: HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System
+        name: LegalNoticeCaption
+        data: "Authorized Access"
+        type: REG_SZ
+      register: title
+
+    - name: Set banner text (body) for Windows 7
+      ansible.windows.win_regedit:
+        path: HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System
+        name: LegalNoticeText
+        data: "This is a secure system of JSW steel india ltd. Unauthorized access is prohibited.This system is under the servelance and any auauthorized access will be reported"
+        type: REG_SZ
+      register: content  
+
+    - name: Reboot the machine
+      ansible.windows.win_reboot:
+        reboot_timeout: 120
+      when: title.changed or content.changed  
