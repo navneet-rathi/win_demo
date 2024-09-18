@@ -10,7 +10,7 @@
         name: 'Start'
         data: 4
         type: dword
-      become: yes
+      #become: yes
     
     # Task 2: Get all USB Root Hubs in Device Manager
     - name: Get all USB Root Hub devices
