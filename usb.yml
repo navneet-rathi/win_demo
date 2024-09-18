@@ -21,3 +21,9 @@
     - name: Show USB devices
       debug:
         var: usb_devices.stdout_lines
+
+    - name: Enable the specific USB device
+      ansible.windows.win_shell: |
+        $device = Get-WmiObject Win32_PnPEntity | Where-Object { $_.DeviceID -eq "USB\ROOT_HUB30\4&2B8754FF&0&0" }
+        $device.Enable()
+     # become: yes        
