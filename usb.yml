@@ -26,4 +26,8 @@
       ansible.windows.win_shell: |
         $device = Get-WmiObject Win32_PnPEntity | Where-Object { $_.DeviceID -eq "USB\ROOT_HUB30\4&2B8754FF&0&0" }
         $device.Enable()
-     # become: yes        
+     # become: yes 
+
+    - name: Reboot system after whitelisting USB device (if required)
+      win_reboot:
+        reboot_timeout: 120           
