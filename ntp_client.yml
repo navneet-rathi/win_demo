@@ -9,6 +9,7 @@
    #     name: NTP
    #     state: present
 
+##This step is not necessary but added for asthetics so ip is not shown but fqdn looks more appling 
     - name: Configure NTP server
       copy:
         dest: C:\Windows\System32\drivers\etc\hosts
