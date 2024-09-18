@@ -6,7 +6,7 @@
     # Task 1: Disable USB storage via Registry
     - name: Disable USB storage by modifying registry
       ansible.windows.win_regedit:
-        path: 'HKLM\SYSTEM\CurrentControlSet\Services\USBSTOR'
+        path: 'HKLM:\SYSTEM\CurrentControlSet\Services\USBSTOR'
         name: 'Start'
         data: 4
         type: dword
