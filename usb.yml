@@ -1,6 +1,6 @@
 ---
 - name: Disable USB storage and enable one USB port on Windows 7
-  hosts: windows
+  hosts: all
   tasks:
     
     # Task 1: Disable USB storage via Registry
