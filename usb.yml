@@ -13,29 +13,11 @@
       become: yes
     
     # Task 2: Ensure DevCon is available on the machine
-    - name: Copy DevCon to the target machine
-      ansible.windows.win_copy:
-        src: /path/to/devcon.exe  # Path to devcon.exe on your Ansible controller
-        dest: C:\Windows\System32\devcon.exe
-        mode: '0755'
-    
-    # Task 3: Get all USB Root Hubs using DevCon (Outputs Device IDs of USB Root Hubs)
-    - name: List all USB Root Hubs
+    - name: List all USB devices
       ansible.windows.win_shell: |
-        devcon hwids =usb
+        Get-WmiObject Win32_PnPEntity | Where-Object { $_.Description -like "*USB*" } | Select-Object DeviceID, Description
       register: usb_devices
 
-    - name: list all usb_devices
-      ansible.builtin.debug:
-        msg: "{{ usb_devices }}"
-
-  #  # Task 4: Disable all USB Root Hubs except the one you want to leave enabled
-  #  - name: Disable all USB Root Hubs except one
-  #    ansible.windows.win_shell: |
-  #      $hub_list = "{{ usb_devices.stdout_lines }}"
-  #      foreach ($hub in $hub_list) {
-  #        if ($hub -ne "DeviceID_of_USB_Port_to_Leave_Enabled") {
-  #          devcon disable "$hub"
-  #        }
-  #      }
-  #    become: yes
+    - name: Show USB devices
+      debug:
+        var: usb_devices.stdout_lines
