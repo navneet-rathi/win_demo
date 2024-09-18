@@ -3,11 +3,23 @@
   hosts: all
   become: yes
   tasks:
+    - name: check if chrony is installed
+      shell: rpm -qa | grep chrony
+      register: chrony_installed
+      ignore_errors: True
+      check_mode: False
+      changed_when: False
 
+    - name: print
+      debug:
+        msg: "chrony is installed"
+      when: chrony_installed.rc == 0
+      
     - name: Install chrony package
       yum:
         name: chrony
         state: present
+      when: chrony_installed.rc != 0  
 
     - name: Configure chrony as an NTP server
       copy:
