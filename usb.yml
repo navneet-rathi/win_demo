@@ -1,30 +1,19 @@
 ---
-- name: Enable or Disable USB devices on Windows using WMI
+- name: Disable USB storage and enable one USB port on Windows 7
   hosts: all
-  gather_facts: no
   tasks:
-
-#    - name: Disable all USB devices
-#      win_shell: |
-#        Get-WmiObject -Query "SELECT * FROM Win32_PnPEntity WHERE PNPClass = 'USB'" |
-#        ForEach-Object { $_.Disable() }
-
-#    - name: Enable specific USB device based on Device ID (replace DEVICE_ID)
-#      win_shell: |
-#        Get-WmiObject -Query "SELECT * FROM Win32_PnPEntity WHERE DeviceID = 'DEVICE_ID'" |
-#        ForEach-Object { $_.Enable() }
-
-#    - name: Enable specific USB devices by Hardware ID (replace with actual Hardware ID)
-#      win_shell: |
-#        Get-WmiObject -Query "SELECT * FROM Win32_PnPEntity WHERE HardwareID LIKE 'USB\\VID_XXXX&PID_YYYY'" |
-#        ForEach-Object { $_.Enable() }
-
-    - name: Show all USB devices (optional)
-      win_shell: |
-        Get-WmiObject -Query "SELECT * FROM Win32_PnPEntity WHERE PNPClass = 'USB'" |
-        Format-Table Name, DeviceID, HardwareID
-      register: usb_devices
-
-    - name: Debug output of all USB devices (optional)
-      debug:
-        var: usb_devices.stdout
+    
+    # Task 1: Disable USB storage via Registry
+    - name: Disable USB storage by modifying registry
+      ansible.windows.win_regedit:
+        path: 'HKLM\SYSTEM\CurrentControlSet\Services\USBSTOR'
+        name: 'Start'
+        data: 4
+        type: dword
+      become: yes
+    
+    # Task 2: Get all USB Root Hubs in Device Manager
+    - name: Get all USB Root Hub devices
+      ansible.windows.win_shell: |
+        Get-PnpDevice -FriendlyName "USB Root Hub" | Select-Object FriendlyName, DeviceID
+      register: usb_root_hubs
