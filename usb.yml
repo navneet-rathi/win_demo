@@ -19,7 +19,7 @@
 
 - name: Enable a specific USB device by PnP ID
   hosts: all
-  become: yes
+  #become: yes
   tasks:
 
     # Retrieve USB device information (PnP ID)
