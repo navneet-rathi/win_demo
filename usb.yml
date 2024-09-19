@@ -31,8 +31,8 @@
     # Enable the specific USB device
     - name: Enable the USB device using PnP ID
       ansible.windows.win_shell: |
-        $device = Get-WmiObject Win32_PnPEntity | Where-Object { $_.DeviceID -eq "USB\\ROOT_HUB30\\4&2B8754FF&0&0" }
+        $device = Get-WmiObject Win32_PnPEntity | Where-Object { $_.DeviceID -eq "USB\ROOT_HUB\4&209C0ADD&0" }
         if ($device) {
           $device.PSBase.InvokeMethod('Enable', $null)
         }
-      when: usb_devices.stdout_lines is search('USB\\ROOT_HUB30\\4&2B8754FF&0&0')  # Replace with your actual PnP ID   
+      when: usb_devices.stdout_lines is search('USB\ROOT_HUB\4&209C0ADD&0')  # Replace with your actual PnP ID   
