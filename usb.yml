@@ -11,6 +11,10 @@
         data: 4
         type: dword
      # become: yes
+
+    - name: Reboot system after whitelisting USB device (if required)
+      win_reboot:
+        reboot_timeout: 120     
     
 
 - name: Enable a specific USB device by PnP ID
