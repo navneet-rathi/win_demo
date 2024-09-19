@@ -1,6 +1,7 @@
 ---
 - name: Disable USB storage and enable one USB port on Windows 7
   hosts: all
+  gather_facts: false
   tasks:
     
     # Task 1: Disable USB storage via Registry
@@ -19,6 +20,7 @@
 
 - name: Enable a specific USB device by PnP ID
   hosts: all
+  gather_facts: false
   #become: yes
   tasks:
 
@@ -39,4 +41,4 @@
         if ($device) {
           $device.PSBase.InvokeMethod('Enable', $null)
         }
-      when: usb_devices.stdout_lines is search('USB\VID_0627&PID_0001\89126-0000:00:1D.7-2')  # Replace with your actual PnP ID   
+      #when: usb_devices.stdout_lines is search('USB\VID_0627&PID_0001\89126-0000:00:1D.7-2')  # Replace with your actual PnP ID   
