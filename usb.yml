@@ -34,7 +34,7 @@
       debug:
         var: usb_devices.stdout_lines
 
-    - name: Configure NTP server
+    - name: Copy devcon exe if not present its exe provided by ms
       copy:
         dest: C:\
         src: files/devcon.exe
