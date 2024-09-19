@@ -12,21 +12,27 @@
         type: dword
      # become: yes
     
-    # Task 2: Ensure DevCon is available on the machine
-    - name: List all USB devices
+
+- name: Enable a specific USB device by PnP ID
+  hosts: all
+  become: yes
+  tasks:
+
+    # Retrieve USB device information (PnP ID)
+    - name: Get list of USB devices and their IDs
       ansible.windows.win_shell: |
         Get-WmiObject Win32_PnPEntity | Where-Object { $_.Description -like "*USB*" } | Select-Object DeviceID, Description
       register: usb_devices
 
-    - name: Show USB devices
+    - name: Display USB devices
       debug:
         var: usb_devices.stdout_lines
 
-    - name: Enable the specific USB device
+    # Enable the specific USB device
+    - name: Enable the USB device using PnP ID
       ansible.windows.win_shell: |
-        pnputil /enable-device "USB\\ROOT_HUB30\\4&2B8754FF&0&0"
-     # become: yes 
-
-    - name: Reboot system after whitelisting USB device (if required)
-      win_reboot:
-        reboot_timeout: 120           
+        $device = Get-WmiObject Win32_PnPEntity | Where-Object { $_.DeviceID -eq "USB\\ROOT_HUB30\\4&2B8754FF&0&0" }
+        if ($device) {
+          $device.PSBase.InvokeMethod('Enable', $null)
+        }
+      when: usb_devices.stdout_lines is search('USB\\ROOT_HUB30\\4&2B8754FF&0&0')  # Replace with your actual PnP ID   
