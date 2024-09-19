@@ -55,6 +55,24 @@
         enabled: yes
         state: started
 
+    - name: Ensure firewalld is running
+      ansible.builtin.service:
+        name: firewalld
+        state: started
+        enabled: yes
+
+    - name: Open UDP port 123 for NTP (Chrony) on the server
+      ansible.posix.firewalld:
+        port: 123/udp
+        permanent: true
+        state: enabled
+        immediate: true
+
+    - name: Reload firewalld to apply changes
+      ansible.builtin.service:
+        name: firewalld
+        state: reloaded
+        
   handlers:
     - name: restart chronyd
       systemd:
