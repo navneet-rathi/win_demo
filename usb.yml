@@ -41,7 +41,7 @@
 
     - name: Enable USB device with devcon.exe This exe will be very dependent on platform
       ansible.windows.win_shell: |
-        C:\devcon.exe enable "USB\\ROOT_HUB30\\4&2B8754FF&0&0"
+        C:\devcon.exe enable "USB\\VID_0627&PID_0001\\28754-0000:00:1D.7-1"
       args:
         chdir: 'C:\'  # Path where devcon.exe is located
       register: devcon_result
