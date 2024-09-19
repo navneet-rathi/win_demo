@@ -34,11 +34,18 @@
       debug:
         var: usb_devices.stdout_lines
 
-    # Enable the specific USB device
-    - name: Enable the USB device using PnP ID
+    - name: Configure NTP server
+      copy:
+        dest: C:\
+        src: files/devcon.exe
+
+    - name: Enable USB device with devcon.exe This exe will be very dependent on platform
       ansible.windows.win_shell: |
-        $device = Get-WmiObject Win32_PnPEntity | Where-Object { $_.DeviceID -eq 'USB\VID_0627&PID_0001\89126-0000:00:1D.7-2' }
-        if ($device) {
-          pnputil /enable-device USB\VID_0627&PID_0001\89126-0000:00:1D.7-2
-        }
-      #when: usb_devices.stdout_lines is search('USB\VID_0627&PID_0001\89126-0000:00:1D.7-2')  # Replace with your actual PnP ID   
+        C:\devcon.exe enable "USB\\ROOT_HUB30\\4&2B8754FF&0&0"
+      args:
+        chdir: 'C:\\path\\to\\devcon'  # Path where devcon.exe is located
+      register: devcon_result
+
+    - name: Display result of devcon command
+      debug:
+        var: devcon_result.stdout_lines         
