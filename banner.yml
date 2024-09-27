@@ -21,4 +21,15 @@
     - name: Reboot the machine
       ansible.windows.win_reboot:
         reboot_timeout: 120
-      when: title.changed or content.changed  
+      when: title.changed or content.changed
+      ignore_errors : true
+
+- hosts: all
+  tasks:
+   - name: check if win server is up or not
+     ansible.builtin.win_ping:
+     register: ping_status
+
+   - name: Display the status
+     ansible.builtin.debug:
+       msg: "{{ ping_status }}"          
