@@ -1,6 +1,7 @@
 ---
 - name: Check SSL certificate expiry and alert
   hosts: localhost
+  connection: local
   gather_facts: no
   vars:
     url: "google.com"               # Replace with the URL to check
