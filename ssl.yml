@@ -25,7 +25,7 @@
    
     - name: Include Jinja template for email body
       template:
-        src: ssl_alert_email.html.j2
+        src: ssl_alert_email_html.j2
         dest: /tmp/alert_email.html
       vars:
         expire_days: "{{ (( cert.not_after | to_datetime('%Y%m%d%H%M%SZ')) - (ansible_date_time.iso8601 | to_datetime('%Y-%m-%dT%H:%M:%SZ')) ).days }}"
