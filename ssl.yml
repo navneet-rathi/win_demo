@@ -8,25 +8,25 @@
 
   tasks:
     - name: Get SSL certificate expiration date
-      command: "echo | openssl s_client -connect {{ url }}:443 -servername {{ url }} 2>/dev/null | openssl x509 -noout -enddate"
+      ansible.builtin.command: "echo | openssl s_client -connect {{ url }}:443 -servername {{ url }} 2>/dev/null | openssl x509 -noout -enddate"
       register: cert_info
       ignore_errors: yes
 
     - name: Extract certificate expiry date
-      set_fact:
+      ansible.builtin.set_fact:
         expiry_date: "{{ cert_info.stdout | regex_search('notAfter=(.*)', '\\1') }}"
       when: cert_info.stdout is defined
 
     - name: Show extracted expiry date
-      debug:
+      ansible.builtin.debug:
         msg: "The certificate for {{ url }} expires on {{ expiry_date }}"
 
     - name: Calculate days left until expiry
-      set_fact:
+      ansible.builtin.set_fact:
         expiry_days_left: "{{ (expiry_date | to_datetime('%b %d %H:%M:%S %Y %Z') - ansible_date_time.iso8601 | to_datetime).days }}"
 
     - name: Show number of days left until certificate expires
-      debug:
+      ansible.builtin.debug:
         msg: "The certificate for {{ url }} will expire in {{ expiry_days_left }} days."
 
     - name: Alert if certificate is expiring soon
