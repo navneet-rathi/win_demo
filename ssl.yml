@@ -3,7 +3,7 @@
   hosts: localhost
 #  connection: local
   vars:
-    worn: 150
+    worn: 90
     user_email: nrathi@redhat.com
     site_url: www.redhat.com
   #vars_files:
