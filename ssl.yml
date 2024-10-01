@@ -12,7 +12,6 @@
      community.crypto.get_certificate:
        host: "{{ url }}"
        port: 443
-     delegate_to: localhost
      run_once: true
      register: cert
 
