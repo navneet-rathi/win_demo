@@ -4,7 +4,7 @@
   connection: local
   gather_facts: no
   vars:
-    url: "google.com"               # Replace with the URL to check
+    url: "www.google.com"               # Replace with the URL to check
     alert_threshold: 30              # Threshold for alert in days
 
   tasks:
