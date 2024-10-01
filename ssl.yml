@@ -1,23 +1,49 @@
 ---
-- name: Check SSL certificate expiry and alert
+- name: check the certs 
   hosts: localhost
-  connection: local
-  gather_facts: no
+#  connection: local
   vars:
-    url: "www.google.com"               # Replace with the URL to check
-    alert_threshold: 30              # Threshold for alert in days
-
+    worn: 150
+    user_email: nrathi@redhat.com
+    site_url: www.redhat.com
+  #vars_files:
+  #  - vars.yml
   tasks:
-   - name: Get a cert from an https port
-     community.crypto.get_certificate:
-       host: "{{ url }}"
-       port: 443
-     run_once: true
-     register: cert
+    - name: Get a cert from an https port
+      community.crypto.get_certificate:
+        host: "{{ site_url }}"
+        port: 443
+      delegate_to: localhost
+      register: cert
 
-   - name: How many days until cert expires
-     ansible.builtin.debug:
-       msg: "cert expires in: {{ expire_days }} days."
-     vars:
-       expire_days: >-
-         "{{ ((cert.not_after | ansible.builtin.to_datetime('%Y%m%d%H%M%SZ')) - (ansible_date_time.iso8601 | ansible.builtin.to_datetime('%Y-%m-%dT%H:%M:%SZ'))).days }}"
+    - name: How many days until cert expires
+      ansible.builtin.debug:
+        msg: "cert expires in: {{ expire_days }} days."
+      when: expire_days | int <= "{{ worn }}"| int
+      vars:
+        expire_days: "{{ (( cert.not_after | to_datetime('%Y%m%d%H%M%SZ')) - (ansible_date_time.iso8601 | to_datetime('%Y-%m-%dT%H:%M:%SZ')) ).days }}"
+   
+    - name: Include Jinja template for email body
+      template:
+        src: alert_email.html.j2
+        dest: /tmp/alert_email.html
+      vars:
+        expire_days: "{{ (( cert.not_after | to_datetime('%Y%m%d%H%M%SZ')) - (ansible_date_time.iso8601 | to_datetime('%Y-%m-%dT%H:%M:%SZ')) ).days }}"
+      when: expire_days | int <= "{{ worn }}"| int
+
+    - name: Send email Alert
+      mail:
+        host: smtp.gmail.com
+        port: 587
+        subtype: html
+        to:
+        - "nrathi@redhat.com"
+        subject: "Alert: cert is failing on"
+        subtype: html
+        body: "{{ lookup('file', '/tmp/alert_email.html') }}"
+        username: 
+        password: 
+      when: expire_days | int <= "{{ worn }}"
+      vars:
+        expire_days: "{{ (( cert.not_after | to_datetime('%Y%m%d%H%M%SZ')) - (ansible_date_time.iso8601 | to_datetime('%Y-%m-%dT%H:%M:%SZ')) ).days }}"        
+      when: expire_days | int <= "{{ worn }}"| int

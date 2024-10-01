@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title> User created or Password Updated</title>
+   <style>
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f9;
+      margin: 0 auto;
+    }
+    
+    th, td {
+      padding: 12px;
+      border: 1px solid #ddd;
+      text-align: left;
+    }
+
+    th {
+      background-color: #17469E;
+      color: white;
+      text-transform: uppercase;
+      font-size: 14px;
+    }
+
+    td {
+      background-color: #f9f9f9;
+      font-size: 14px;
+    }
+
+    td.label {
+      font-weight: bold;
+      background-color: #e0e0e0;
+    }
+
+    .title {
+      text-align: center;
+      font-size: 18px;
+      font-weight: bold;
+      margin-bottom: 20px;
+      color: #333;
+    }
+
+    .container {
+      width: 80%;
+      margin: 0 auto;
+    }
+  </style>
+</head>
+
+<body>
+
+    <p>Dear Team,</p>
+
+    <p>This is an automated alert to inform you:</p>
+    <p>SSL cert for below {{ site_url }} site will be expire {{ expire_days }} </p>
+
+   
+    <p>Best regards,<br/>{{ awx_user_email }}</p>
+
+</body>
+
+</html>
