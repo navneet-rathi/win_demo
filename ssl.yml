@@ -5,7 +5,7 @@
   vars:
     worn: 150
     user_email: nrathi@redhat.com
-    site_url: www.redhat.com
+    site_url: google.com
   #vars_files:
   #  - vars.yml
   tasks:
