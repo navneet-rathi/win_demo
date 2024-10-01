@@ -10,7 +10,7 @@
   tasks:
    - name: Get a cert from an https port
      community.crypto.get_certificate:
-       host: "www.google.com"
+       host: "{{ url }}"
        port: 443
      delegate_to: localhost
      run_once: true
