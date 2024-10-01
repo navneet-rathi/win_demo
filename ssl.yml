@@ -15,6 +15,7 @@
         port: 443
       delegate_to: localhost
       register: cert
+      when: "{{ site_url is url }}"
 
     - name: How many days until cert expires
       ansible.builtin.debug:
