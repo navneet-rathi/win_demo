@@ -8,34 +8,19 @@
     alert_threshold: 30              # Threshold for alert in days
 
   tasks:
-    - name: Get SSL certificate expiration date
-      ansible.builtin.command: "echo | openssl s_client -connect {{ url }}:443 -servername {{ url }} 2>/dev/null | openssl x509 -noout -enddate"
-      register: cert_info
-      ignore_errors: yes
+   - name: Get a cert from an https port
+     community.crypto.get_certificate:
+       host: "www.google.com"
+       port: 443
+     delegate_to: localhost
+     run_once: true
+     register: cert
 
-    - name: Extract certificate expiry date
-      ansible.builtin.set_fact:
-        expiry_date: "{{ cert_info.stdout | regex_search('notAfter=(.*)', '\\1') }}"
-      when: cert_info.stdout is defined
-
-    - name: Show extracted expiry date
-      ansible.builtin.debug:
-        msg: "The certificate for {{ url }} expires on {{ expiry_date }}"
-
-    - name: Calculate days left until expiry
-      ansible.builtin.set_fact:
-        expiry_days_left: "{{ (expiry_date | to_datetime('%b %d %H:%M:%S %Y %Z') - ansible_date_time.iso8601 | to_datetime).days }}"
-
-    - name: Show number of days left until certificate expires
-      ansible.builtin.debug:
-        msg: "The certificate for {{ url }} will expire in {{ expiry_days_left }} days."
-
-    - name: Alert if certificate is expiring soon
-      fail:
-        msg: "The SSL certificate for {{ url }} will expire in {{ expiry_days_left }} days. Renew it soon!"
-      when: expiry_days_left <= alert_threshold
-
-    - name: Success message if certificate is valid
-      debug:
-        msg: "The SSL certificate for {{ url }} is valid for {{ expiry_days_left }} more days."
-      when: expiry_days_left > alert_threshold
+   - name: How many days until cert expires
+     ansible.builtin.debug:
+       msg: "cert expires in: {{ expire_days }} days."
+     vars:
+       expire_days: >-
+         {{ (
+            (cert.not_after | ansible.builtin.to_datetime('%Y%m%d%H%M%SZ')) - (ansible_date_time.iso8601 | ansible.builtin.to_datetime('%Y-%m-%dT%H:%M:%SZ'))
+         ).days }}
