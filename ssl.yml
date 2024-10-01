@@ -1,0 +1,40 @@
+---
+- name: Check SSL certificate expiry and alert
+  hosts: localhost
+  gather_facts: no
+  vars:
+    url: "google.com"               # Replace with the URL to check
+    alert_threshold: 30              # Threshold for alert in days
+
+  tasks:
+    - name: Get SSL certificate expiration date
+      command: "echo | openssl s_client -connect {{ url }}:443 -servername {{ url }} 2>/dev/null | openssl x509 -noout -enddate"
+      register: cert_info
+      ignore_errors: yes
+
+    - name: Extract certificate expiry date
+      set_fact:
+        expiry_date: "{{ cert_info.stdout | regex_search('notAfter=(.*)', '\\1') }}"
+      when: cert_info.stdout is defined
+
+    - name: Show extracted expiry date
+      debug:
+        msg: "The certificate for {{ url }} expires on {{ expiry_date }}"
+
+    - name: Calculate days left until expiry
+      set_fact:
+        expiry_days_left: "{{ (expiry_date | to_datetime('%b %d %H:%M:%S %Y %Z') - ansible_date_time.iso8601 | to_datetime).days }}"
+
+    - name: Show number of days left until certificate expires
+      debug:
+        msg: "The certificate for {{ url }} will expire in {{ expiry_days_left }} days."
+
+    - name: Alert if certificate is expiring soon
+      fail:
+        msg: "The SSL certificate for {{ url }} will expire in {{ expiry_days_left }} days. Renew it soon!"
+      when: expiry_days_left <= alert_threshold
+
+    - name: Success message if certificate is valid
+      debug:
+        msg: "The SSL certificate for {{ url }} is valid for {{ expiry_days_left }} more days."
+      when: expiry_days_left > alert_threshold
