@@ -1,0 +1,78 @@
+---
+- name: Patch Linux servers and report detailed patch information
+  hosts: all
+  become: yes
+  gather_facts: yes
+  vars:
+    report_file: "/tmp/patch_report_{{ inventory_hostname }}.txt"
+    alert_threshold: 5  # Number of days left before a patch is applied
+
+  tasks:
+    - name: Check for available updates before patching
+      yum:
+        list: updates
+      register: pre_patch_updates
+
+    - name: Save the list of available updates with details before patching
+      copy:
+        content: |
+          {{ inventory_hostname }}:
+          Updates available before patching:
+          {% for pkg in pre_patch_updates.results %}
+          - Name: {{ pkg.name }}
+            Current version: {{ pkg.version }}
+            Repo: {{ pkg.repo }}
+          {% endfor %}
+        dest: "{{ report_file }}"
+        mode: '0644'
+      when: pre_patch_updates.results | length > 0
+
+    - name: Apply all updates (patch the system)
+      yum:
+        name: "*"
+        state: latest
+      register: patching_result
+
+    - name: Check for remaining updates after patching
+      yum:
+        list: updates
+      register: post_patch_updates
+
+    - name: List updated packages after patching
+      shell: "yum history info `yum history | grep -m 1 'Updated' | awk '{print $1}'`"
+      register: updated_packages
+      ignore_errors: yes
+
+    - name: Save the list of packages updated
+      copy:
+        content: |
+          {{ inventory_hostname }}:
+          Updated Packages:
+          {{ updated_packages.stdout }}
+        dest: "{{ report_file }}"
+        mode: '0644'
+      when: patching_result.changed
+
+    - name: Save the list of remaining updates after patching
+      copy:
+        content: |
+          {{ inventory_hostname }}:
+          Remaining Updates after patching:
+          {% for pkg in post_patch_updates.results %}
+          - Name: {{ pkg.name }}
+            Repo: {{ pkg.repo }}
+          {% endfor %}
+        dest: "{{ report_file }}"
+        mode: '0644'
+      when: post_patch_updates.results | length > 0
+
+    - name: Generate summary report
+      copy:
+        content: |
+          {{ inventory_hostname }}:
+          Patching Status:
+          - Updates before patching: {{ pre_patch_updates.results | length }}
+          - Updates after patching: {{ post_patch_updates.results | length }}
+          - Packages updated: {{ updated_packages.stdout }}
+        dest: "{{ report_file }}"
+        mode: '0644'
