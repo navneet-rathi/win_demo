@@ -7,4 +7,5 @@ This repo have some ansible automation use cases
 5. Setup a NTP server on rhel
 6. Sync Windows machne with rhel time server
 7. Send a Notification using mail about host,username,random_password to pre_configured user
-8. check ssl of site and send mail Notification 
+8. check ssl of site and send mail Notification
+9 Linux Server patching and Basic Reporting. 
