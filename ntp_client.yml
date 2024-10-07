@@ -2,6 +2,7 @@
 - name: Configure NTP server on Windows and synchronize time
   hosts:  all
   #become: yes
+  gather_facts: false
   tasks:
 
    # - name: Install NTP service
