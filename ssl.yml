@@ -39,7 +39,7 @@
         subtype: html
         to:
         - "nrathi@redhat.com"
-        subject: "Alert: cert is failing on"
+        subject: "Alert: cert for {{ site_url }} is expiring in {{ expire_days }} days"
         body: "{{ lookup('file', '/tmp/alert_email.html') }}"
         username: "{{ lookup('hashi_vault', 'secret=secret/data/dev/email:user') }}"
         password: "{{ lookup('hashi_vault', 'secret=secret/data/dev/email:pass') }}"
