@@ -72,7 +72,7 @@
           {{ inventory_hostname }}:
           Patching Status:
           - Updates before patching: {{ pre_patch_updates.results | length }}
-          - Updates after patching: {{ post_patch_updates.results | length }}
+          - Remaining Updates after patching: {{ post_patch_updates.results | length }}
           - Packages updated: {{ updated_packages.stdout }}
         dest: "{{ report_file }}"
         mode: '0644'
