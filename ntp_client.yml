@@ -14,7 +14,7 @@
       copy:
         dest: C:\Windows\System32\drivers\etc\hosts
         content: |
-          192.168.56.4   rhel.ntpserver.local
+          192.168.56.6   rhel.ntpserver.local
      # notify:
      #   - restart ntpd
 
