@@ -69,15 +69,17 @@
         immediate: true
       loop:
         - 123
-        - 323 
-
-    - name: Reload firewalld to apply changes
-      ansible.builtin.service:
-        name: firewalld
-        state: reloaded
-        
+        - 323
+      notify:
+        - Reload firewalld  
+  
   handlers:
     - name: restart chronyd
       systemd:
         name: chronyd
         state: restarted
+
+    - name: Reload firewalld
+      ansible.builtin.service:
+        name: firewalld
+        state: reloaded        
