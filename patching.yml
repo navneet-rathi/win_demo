@@ -1,20 +1,20 @@
 ---
-- name: Patch Linux servers and report detailed patch information
+- name: Patch Linux servers and basic report detailed patch information
   hosts: all
   become: yes
   gather_facts: yes
   vars:
     report_file: "/tmp/patch_report_{{ inventory_hostname }}.txt"
-    alert_threshold: 5  # Number of days left before a patch is applied
+    #alert_threshold: 5  # Number of days left before a patch is applied
 
   tasks:
     - name: Check for available updates before patching
-      yum:
+      ansible.builtin.yum:
         list: updates
       register: pre_patch_updates
 
     - name: Save the list of available updates with details before patching
-      copy:
+      ansible.builtin.copy:
         content: |
           {{ inventory_hostname }}:
           Updates available before patching:
@@ -28,23 +28,23 @@
       when: pre_patch_updates.results | length > 0
 
     - name: Apply all updates (patch the system)
-      yum:
+      ansible.builtin.yum:
         name: "*"
         state: latest
       register: patching_result
 
     - name: Check for remaining updates after patching
-      yum:
+      ansible.builtin.yum:
         list: updates
       register: post_patch_updates
 
     - name: List updated packages after patching
-      shell: "yum history info `yum history | grep -m 1 'Updated' | awk '{print $1}'`"
+      ansible.builtin.shell: "yum history info `yum history | grep -m 1 'Updated' | awk '{print $1}'`"
       register: updated_packages
       ignore_errors: yes
 
     - name: Save the list of packages updated
-      copy:
+      ansible.builtin.copy:
         content: |
           {{ inventory_hostname }}:
           Updated Packages:
@@ -54,7 +54,7 @@
       when: patching_result.changed
 
     - name: Save the list of remaining updates after patching
-      copy:
+      ansible.builtin.copy:
         content: |
           {{ inventory_hostname }}:
           Remaining Updates after patching:
@@ -67,7 +67,7 @@
       when: post_patch_updates.results | length > 0
 
     - name: Generate summary report
-      copy:
+      ansible.builtin.copy:
         content: |
           {{ inventory_hostname }}:
           Patching Status:
