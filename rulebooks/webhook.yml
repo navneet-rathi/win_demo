@@ -1,6 +1,6 @@
 ---
 - name: Respond to webhook POST
-  hosts: all
+  hosts: localhost
   sources:
     - ansible.eda.webhook:
         host: 0.0.0.0
