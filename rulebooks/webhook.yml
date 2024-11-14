@@ -21,4 +21,10 @@
       condition: event.payload.message is defined and event.payload.message != "Hello!"
       action:
         debug:
-          msg: "You said, '{{ event.payload.message }}'. Is that what you meant to say?"
+          msg: "You said, '{{ event.payload }}'. Is that what you meant to say?"
+
+    - name: R3 - Didn't hear "Hello!"
+      condition: event.payload is defined and event.payload != "Hello!"
+      action:
+        debug:
+          msg: "You said, '{{ event.payload }}'. Is that what you meant to say?"          
