@@ -1,18 +1,24 @@
 ---
-- name: Listen for events on a webhook
+- name: Respond to webhook POST
   hosts: all
-  ## Define our source for events
   sources:
     - ansible.eda.webhook:
         host: 0.0.0.0
-        port: 5050
-  ## Define the conditions we are looking for
-#  execution_strategy: parallel
+        port: 5000
+      # filters:
+      #   - cloin.eda.poster:
+      #       webhook_url:
+      #       search:
+
   rules:
-    - name: Say Hello
-      condition: event.payload.message == "Ansible is super cool"
-  ## Define the action we should take should the condition be met
+    - name: R1 - Heard "Hello!"
+      condition: event.payload.message == "Hello!"
       action:
-        run_job_template:
-          name: do-something
-          organization: Default
+        debug:
+          msg: "You said, '{{ event.payload.message }}'. Is it me you're looking for?"
+
+    - name: R2 - Didn't hear "Hello!"
+      condition: event.payload.message is defined and event.payload.message != "Hello!"
+      action:
+        debug:
+          msg: "You said, '{{ event.payload.message }}'. Is that what you meant to say?"
