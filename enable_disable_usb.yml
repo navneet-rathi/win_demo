@@ -46,4 +46,5 @@
     - name: Reboot system after whitelisting USB device (if required)
       win_reboot:
         reboot_timeout: 120
+      ignore_errors : true  
       when: usb_en.changed or usb_dis.changed
