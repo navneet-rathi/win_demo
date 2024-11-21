@@ -1,9 +1,40 @@
----
-users:
-  - host: demo1
-    username: user1
-  - host: demo2
-    username: user2
-  - host: demo3
-    username: user3   
+#---
+#users:
+#  - host: demo1
+#    username: user1
+#  - host: demo2
+#    username: user2
+#  - host: demo3
+#    username: user3   
 ### This way we can have a long mapping of host and users for which we want to rotate the pass    
+---
+- name: Sending notification to users for changing the password
+  hosts: localhost
+  gather_facts: false
+  tasks:
+    - name: Genrate Email content to Send in Email
+      ansible.builtin.template:
+        src: email_alert_password_html.j2
+        dest: /tmp/alert_email.html
+      run_once: true  
+      delegate_to: 127.0.0.1
+      when:
+         - create|default(true)|bool == true     
+
+    - name: Send email Alert
+      mail:
+        host: smtp.gmail.com
+        port: 587
+        subtype: html
+        to:
+        - "nrathi@redhat.com"
+        subject: "Alert: Password Changed or Updated as per the org policy"
+        body: "{{ lookup('file', '/tmp/alert_email.html') }}"
+        username: "{{ lookup('hashi_vault', 'secret=secret/data/dev/email:user') }}"
+        password: "{{ lookup('hashi_vault', 'secret=secret/data/dev/email:pass') }}"
+      run_once: true  
+      delegate_to: 127.0.0.1
+      changed_when: True
+      when:
+         - create|default(true)|bool == true
+ 
