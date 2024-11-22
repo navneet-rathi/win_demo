@@ -11,31 +11,35 @@
       condition: event.payload.action is defined and event.payload.action == "disallow usb storage"
       action:
         run_job_template:
-          name: 'eda - site down'
+          name: '01-js-usb'
           organization: 'Default'
           job_args:
             extra_vars:
-              message: from eda
-              sleep: 1
+              usb_disable: true
 
     - name: R2 - Enable USB device
       condition: event.payload.action is defined and event.payload.action == "allow usb storage"
       action:
         run_job_template:
-          name: 'eda - site down'
+          name: '01-js-usb'
           organization: 'Default'
           job_args:
             extra_vars:
-              message: from eda
-              sleep: 1
-              
+              usb_disable: false
+
     - name: R3 - Send Notifucation"
       condition: event.payload.action is defined and event.payload.action == "Rotate password"
       action:
         run_job_template:
-          name: 'eda - site down'
+          name: '01-js-user-notification'
           organization: 'Default'
           job_args:
             extra_vars:
-              message: from eda
-              sleep: 1                   
+              hosts: event.payload.deviceIp
+
+    - name: R4 - Setup Banner"
+      condition: event.payload.action is defined and event.payload.action == "setup banner"
+      action:
+        run_job_template:
+          name: '01-js-banner'
+          organization: 'Default'                        
