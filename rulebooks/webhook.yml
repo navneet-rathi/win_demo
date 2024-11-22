@@ -5,26 +5,37 @@
     - ansible.eda.webhook:
         host: 0.0.0.0
         port: 5000
-      # filters:
-      #   - cloin.eda.poster:
-      #       webhook_url:
-      #       search:
 
   rules:
-    - name: R1 - Heard "Hello!"
-      condition: event.payload.message == "Hello!"
+    - name: R1 - Disable USB device
+      condition: event.payload.action is defined and event.payload.action == "disallow usb storage"
       action:
-        debug:
-          msg: "You said, '{{ event.payload.message }}'. Is it me you're looking for?"
+        run_job_template:
+          name: 'eda - site down'
+          organization: 'Default'
+          job_args:
+            extra_vars:
+              message: from eda
+              sleep: 1
 
-    - name: R2 - Didn't hear "Hello!"
-      condition: event.payload.message is defined and event.payload.message != "Hello!"
+    - name: R2 - Enable USB device
+      condition: event.payload.action is defined and event.payload.action == "allow usb storage"
       action:
-        debug:
-          msg: "You said, '{{ event.payload }}'. Is that what you meant to say?"
-
-    - name: R3 - Didn't hear "Hello!"
-      condition: event.payload is defined and event.payload != "Hello!"
+        run_job_template:
+          name: 'eda - site down'
+          organization: 'Default'
+          job_args:
+            extra_vars:
+              message: from eda
+              sleep: 1
+              
+    - name: R3 - Send Notifucation"
+      condition: event.payload.action is defined and event.payload.action == "Rotate password"
       action:
-        debug:
-          msg: "You said, '{{ event.payload }}'. Is that what you meant to say?"          
+        run_job_template:
+          name: 'eda - site down'
+          organization: 'Default'
+          job_args:
+            extra_vars:
+              message: from eda
+              sleep: 1                   
