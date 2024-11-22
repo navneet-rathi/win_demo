@@ -42,4 +42,11 @@
       action:
         run_job_template:
           name: '01-js-banner'
-          organization: 'Default'                        
+          organization: 'Default'
+
+    - name: R5 - Sync Time"
+      condition: event.payload.action is defined and event.payload.action == "sync time"
+      action:
+        run_job_template:
+          name: '01-js-ntp-client'
+          organization: 'Default'
