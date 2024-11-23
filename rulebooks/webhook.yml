@@ -16,7 +16,7 @@
           job_args:
             limit: "{{ event.payload.deviceIp }}"          
             extra_vars:
-              usb_disable: true
+              usb_disable: 'true'
 
     - name: R2 - Enable USB device
       condition: event.payload.action is defined and event.payload.action == "allow usb storage"
@@ -27,7 +27,7 @@
           job_args:
             limit: "{{ event.payload.deviceIp }}"
             extra_vars:
-              usb_disable: false
+              usb_disable: 'false'
 
     - name: R3 - Send Notifucation"
       condition: event.payload.action is defined and event.payload.action == "Rotate password"
