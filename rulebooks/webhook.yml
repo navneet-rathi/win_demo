@@ -14,6 +14,7 @@
           name: '01-js-usb'
           organization: 'Default'
           job_args:
+            limit: "{{ event.payload.deviceIp }}"          
             extra_vars:
               usb_disable: true
 
@@ -24,6 +25,7 @@
           name: '01-js-usb'
           organization: 'Default'
           job_args:
+            limit: "{{ event.payload.deviceIp }}"
             extra_vars:
               usb_disable: false
 
@@ -35,7 +37,7 @@
           organization: 'Default'
           job_args:
             extra_vars:
-              hosts: event.payload.deviceIp
+              hosts: "{{ event.payload.deviceIp }}"
 
     - name: R4 - Setup Banner"
       condition: event.payload.action is defined and event.payload.action == "setup banner"
