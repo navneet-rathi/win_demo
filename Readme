@@ -9,3 +9,12 @@ This repo have some ansible automation use cases
 7. Send a Notification using mail about host,username,random_password to pre_configured user
 8. check ssl of site and send mail Notification
 9 Linux Server patching and Basic Reporting. 
+
+EDA sample command
+curl -H 'Content-Type: application/json' -d "{\"deviceId\" : \"id representing a device uniquely in SmartHub INFER\",\"deviceName\": \"Friendly name of the device in SmartHub INFER\",\"orgName\": \"Org name in SmartHub INFER\",\"deviceIp\" : \"Leena-Win\", \"action\" : \"Rotate password\" }" 127.0.0.1:5000/endpoint
+curl -H 'Content-Type: application/json' -d "{\"deviceId\" : \"id representing a device uniquely in SmartHub INFER\",\"deviceName\": \"Friendly name of the device in SmartHub INFER\",\"orgName\": \"Org name in SmartHub INFER\",\"deviceIp\" : \"Leena-Win\", \"action\" : \"Rotate password\" }" 127.0.0.1:5000/endpoint
+curl -H 'Content-Type: application/json' -d "{\"deviceId\" : \"id representing a device uniquely in SmartHub INFER\",\"deviceName\": \"Friendly name of the device in SmartHub INFER\",\"orgName\": \"Org name in SmartHub INFER\",\"deviceIp\" : \"Leena-Win\", \"action\" : \"allow usb storage\" }" 127.0.0.1:5000/endpoint
+curl -H 'Content-Type: application/json' -d "{\"deviceId\" : \"id representing a device uniquely in SmartHub INFER\",\"deviceName\": \"Friendly name of the device in SmartHub INFER\",\"orgName\": \"Org name in SmartHub INFER\",\"deviceIp\" : \"Leena-Win\", \"action\" : \"allow usb storage\" }" 127.0.0.1:5000/endpoint
+curl -H 'Content-Type: application/json' -d "{\"deviceId\" : \"id representing a device uniquely in SmartHub INFER\",\"deviceName\": \"Friendly name of the device in SmartHub INFER\",\"orgName\": \"Org name in SmartHub INFER\",\"deviceIp\" : \"Leena-Win\", \"action\" : \"disallow usb storage\" }" 127.0.0.1:5000/endpoint
+curl -H 'Content-Type: application/json' -d "{\"deviceId\" : \"id representing a device uniquely in SmartHub INFER\",\"deviceName\": \"Friendly name of the device in SmartHub INFER\",\"orgName\": \"Org name in SmartHub INFER\",\"deviceIp\" : \"Leena-Win\", \"action\" : \"allow usb storage\" }" 127.0.0.1:5000/endpoint
+curl -H 'Content-Type: application/json' -d "{\"deviceId\" : \"id representing a device uniquely in SmartHub INFER\",\"deviceName\": \"Friendly name of the device in SmartHub INFER\",\"orgName\": \"Org name in SmartHub INFER\",\"deviceIp\" : \"Leena-Win\", \"action\" : \"allow usb storage\" }" 127.0.0.1:5000/endpoint
