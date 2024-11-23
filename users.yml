@@ -28,7 +28,7 @@
         subtype: html
         to:
         - "nrathi@redhat.com"
-        subject: "Alert: Password Changed or Updated as per the org policy"
+        subject: "Alert: Password rotation notification"
         body: "{{ lookup('file', '/tmp/alert_email.html') }}"
         username: "{{ lookup('hashi_vault', 'secret=secret/data/dev/email:user') }}"
         password: "{{ lookup('hashi_vault', 'secret=secret/data/dev/email:pass') }}"
