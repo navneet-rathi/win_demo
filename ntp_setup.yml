@@ -29,11 +29,11 @@
           pool 2.centos.pool.ntp.org iburst
 
           # Allow NTP client access from the local network
-          allow 192.168.1.0/24
+          allow 192.168.1.0/16
 
           #Allow NTP client to access from local network hostonly
           allow 192.168.56.0/24
-
+          allow 192.168.64.0/24
           # Serve time even if not synchronized to any NTP server
           local stratum 10
 
