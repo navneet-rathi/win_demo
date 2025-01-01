@@ -24,7 +24,7 @@
     force: no
   when: lockduration
 
-- name: Set reset the lockout timeout adter 
+- name: Set reset the lockout timeout after 10 min
   win_command: net accounts /lockoutwindow:10
   register: lockoutwindow
   args:

@@ -1,0 +1,14 @@
+---
+- name: Enforce Password Policy 
+  hosts: all
+  gather_facts: true
+  tasks:
+    - name: Check if server are reachable or not
+      ansible.windows.win_ping:
+      register: ping_result
+      
+    - name: Make Changes to Windows for Password Complaince 
+      ansible.builtin.include_tasks: password.yml
+
+    - name: Lockout user for 10 min for 3 wrong attempt for win7
+      ansible.builtin.include_tasks: lock.yml
