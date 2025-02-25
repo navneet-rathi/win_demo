@@ -13,7 +13,7 @@
     - name: Copy PSFTP to Windows Host
       ansible.windows.win_copy:
         src: "/tmp/psftp.exe"
-        dest: "C:\\Users\\Administrator\\Downloads\\psftp.exe"
+        dest: "C:\\psftp.exe"
       
     - name: Find the target file
       ansible.windows.win_find:
