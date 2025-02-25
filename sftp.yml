@@ -21,6 +21,11 @@
       ansible.builtin.debug:
         msg: "{{ found_files.files | map(attribute='path') | list }}"
 
+    - name: Ensure temp directory exists
+      ansible.windows.win_file:
+        path: "C:\\temp"
+        state: directory
+
     - name: Upload found files via SFTP
       ansible.builtin.win_shell: |
         echo open nrathi@192.168.1.13 -pw primod123 > C:\temp\sftp_commands.txt
