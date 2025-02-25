@@ -45,10 +45,10 @@
 
     - name: Upload found files via SFTP
       ansible.builtin.win_shell: |
-        echo ' lcd C:\Users\nrathi\Desktop\nrathi\ ' > C:\temp\sftp_commands.txt
-        echo ' cd /home/nrathi/uploads ' >> C:\temp\sftp_commands.txt
+        echo 'lcd C:\\Users\\nrathi\\Desktop\\nrathi\\ ' > C:\temp\sftp_commands.txt
+        echo 'cd /home/nrathi/uploads' >> C:\temp\sftp_commands.txt
         {% for file in found_files.files %}
         echo "put {{ file.path }}" >> C:\temp\sftp_commands.txt
         {% endfor %}
-        echo ' bye ' >> C:\temp\sftp_commands.txt
+        echo 'bye' >> C:\temp\sftp_commands.txt
         C:\\psftp.exe 192.168.1.13 -l nrathi -pw primod123 -b C:\temp\sftp_commands.txt
