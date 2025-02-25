@@ -1,0 +1,32 @@
+---
+- name: SFTP a file from Windows to Linux
+  hosts: all
+  gather_facts: no
+  tasks:
+    - name: Download putty from putty site for sftp psftp.exe
+      ansible.windows.win_get_url:
+        url: "https://the.earth.li/~sgtatham/putty/0.83/w64/psftp.exe"  
+        dest: "C:\\psftp.exe"
+    
+
+    - name: Find the target file
+      ansible.windows.win_find:
+        paths: "C:\\Users\\nrathi\\Desktop\\nrathi\\"
+        patterns: "*.log"
+        recurse: true
+      register: found_files
+
+    - name: Debug - Show found files
+      ansible.builtin.debug:
+        msg: "{{ found_files.files | map(attribute='path') | list }}"
+
+    - name: Upload found files via SFTP
+      ansible.builtin.win_shell: |
+        echo open nrathi@192.168.1.13 -pw primod123 > C:\temp\sftp_commands.txt
+        echo lcd C:\Users\nrathi\Desktop\nrathi\ >> C:\temp\sftp_commands.txt
+        echo cd /home/nrathi/uploads >> C:\temp\sftp_commands.txt
+        {% for file in found_files.files %}
+        echo put {{ file.path }} >> C:\temp\sftp_commands.txt
+        {% endfor %}
+        echo bye >> C:\temp\sftp_commands.txt
+        C:\\psftp.exe -b C:\temp\sftp_commands.txt
