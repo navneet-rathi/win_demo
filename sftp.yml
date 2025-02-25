@@ -5,7 +5,7 @@
   tasks:
     - name: Check if PSFTP exists on Windows
       ansible.windows.win_stat:
-        path: "C:\\Windows\\System32\\psftp.exe"
+        path: "C:\\psftp.exe"
       register: psftp_status
 
     - name: Debug - Show if PSFTP exists
