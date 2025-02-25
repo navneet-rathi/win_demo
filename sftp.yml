@@ -3,13 +3,18 @@
   hosts: all
   gather_facts: no
   tasks:
-    - name: Download putty from putty site for sftp psftp.exe
-      ansible.windows.win_get_url:
-        url: "https://the.earth.li/~sgtatham/putty/0.83/w64/psftp.exe"  
-        dest: "C:\\psftp.exe"
-        validate_certs: false
-    
+    - name: Download PuTTY PSFTP on Ansible Control Node
+      ansible.builtin.get_url:
+        url: "https://the.earth.li/~sgtatham/putty/latest/w64/psftp.exe"
+        dest: "/tmp/psftp.exe"
+        mode: '0755'
+      delegate_to: localhost  
 
+    - name: Copy PSFTP to Windows Host
+      ansible.windows.win_copy:
+        src: "/tmp/psftp.exe"
+        dest: "C:\\Users\\Administrator\\Downloads\\psftp.exe"
+      
     - name: Find the target file
       ansible.windows.win_find:
         paths: "C:\\Users\\nrathi\\Desktop\\nrathi\\"
