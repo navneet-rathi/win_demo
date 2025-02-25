@@ -42,6 +42,7 @@
       ansible.windows.win_file:
         path: "C:\\temp"
         state: directory
+        
     - name: jinja 2 templating of sftp file | Generate config file from template
       ansible.builtin.template:
         src: templates/sftp_commands.j2
