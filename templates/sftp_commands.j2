@@ -1,0 +1,6 @@
+lcd C:\Users\nrathi\Desktop\nrathi\
+cd /home/nrathi/uploads
+{% for file in found_files.files %}
+put {{ file.path }}
+{% endfor %}
+bye
