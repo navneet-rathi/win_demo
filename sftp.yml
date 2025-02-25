@@ -49,7 +49,7 @@
         echo 'lcd C:\Users\nrathi\Desktop\nrathi\' >> C:\temp\sftp_commands.txt
         echo 'cd /home/nrathi/uploads' >> C:\temp\sftp_commands.txt
         {% for file in found_files.files %}
-        echo 'put {{ file.path }}'' >> C:\temp\sftp_commands.txt
+        echo 'put {{ file.path }}' >> C:\temp\sftp_commands.txt
         {% endfor %}
         echo 'bye' >> C:\temp\sftp_commands.txt
         C:\\psftp.exe -b C:\temp\sftp_commands.txt
