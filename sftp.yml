@@ -3,17 +3,29 @@
   hosts: all
   gather_facts: no
   tasks:
+    - name: Check if PSFTP exists on Windows
+      ansible.windows.win_stat:
+        path: "C:\\Windows\\System32\\psftp.exe"
+      register: psftp_status
+
+    - name: Debug - Show if PSFTP exists
+      ansible.builtin.debug:
+        msg: "PSFTP is already installed."  
+      when: psftp_status.stat.exists
+
     - name: Download PuTTY PSFTP on Ansible Control Node
       ansible.builtin.get_url:
         url: "https://the.earth.li/~sgtatham/putty/latest/w64/psftp.exe"
         dest: "/tmp/psftp.exe"
         mode: '0755'
-      delegate_to: localhost  
+      delegate_to: localhost
+      when: not psftp_status.stat.exists  
 
     - name: Copy PSFTP to Windows Host
       ansible.windows.win_copy:
         src: "/tmp/psftp.exe"
         dest: "C:\\psftp.exe"
+      when: not psftp_status.stat.exists
       
     - name: Find the target file
       ansible.windows.win_find:
