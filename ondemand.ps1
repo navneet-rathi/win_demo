@@ -3,7 +3,7 @@ $LogFile = "C:\temp\file_check.log"
 $Interval = 1  # Time in seconds before checking again
 
 # Red Hat Ansible Automation Platform (AAP) API Details
-$AAP_URL = "https://192.168.1.14/api/v2/job_templates/27/launch/"
+$AAP_URL = "https://192.168.1.14/api/controller/v2/job_templates/27/launch/"
 $AAP_USERNAME = "admin"
 $AAP_PASSWORD = "primod123"
 
