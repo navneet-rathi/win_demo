@@ -58,4 +58,4 @@
              
     - name: Upload found files via SFTP
       ansible.builtin.win_shell: |
-        C:\\psftp.exe 192.168.1.13 -l nrathi -pw primod123 -b C:\temp\sftp_commands.txt
+        C:\\psftp.exe -hostkey "ssh-ed25519 255 SHA256:MmCr8CMppHWt6Mc56mzRhID7b1kWAsjowvLjJj6+lZo" 192.168.1.13 -l nrathi -pw primod123 -b C:\temp\sftp_commands.txt
