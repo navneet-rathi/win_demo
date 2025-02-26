@@ -49,7 +49,7 @@
         dest: /tmp/sftp_commands.txt
       delegate_to: localhost  
 
-    - name: Copy PSFTP to Windows Host
+    - name: Copy PSFTP from ctrl to Windows Host 
       ansible.windows.win_copy:
         src: "/tmp/sftp_commands.txt"
         dest: "C:\\temp\\sftp_commands.txt"
