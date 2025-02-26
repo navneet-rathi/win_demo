@@ -1,0 +1,61 @@
+---
+- name: SFTP a file from Windows to Linux
+  hosts: all
+  gather_facts: no
+  vars:
+    location: "C:\\Users\\nrathi\\Desktop\\navneet\\"
+  tasks:
+    - name: Check if PSFTP exists on Windows
+      ansible.windows.win_stat:
+        path: "C:\\psftp.exe"
+      register: psftp_status
+
+    - name: Debug - Show if PSFTP exists
+      ansible.builtin.debug:
+        msg: "PSFTP is already installed."  
+      when: psftp_status.stat.exists
+
+    - name: Download PuTTY PSFTP on Ansible Control Node
+      ansible.builtin.get_url:
+        url: "https://the.earth.li/~sgtatham/putty/latest/w64/psftp.exe"
+        dest: "/tmp/psftp.exe"
+        mode: '0755'
+      delegate_to: localhost
+      when: not psftp_status.stat.exists  
+
+    - name: Copy PSFTP to Windows Host
+      ansible.windows.win_copy:
+        src: "/tmp/psftp.exe"
+        dest: "C:\\psftp.exe"
+      when: not psftp_status.stat.exists
+      
+    - name: Find the target file
+      ansible.windows.win_find:
+        paths: "{{ location }}"
+  #      #patterns: "*.log"
+        recurse: true
+      register: found_files
+
+    - name: Debug - Show found files
+      ansible.builtin.debug:
+        msg: "{{ found_files.files | map(attribute='path') | list }}"
+
+    - name: Ensure temp directory exists
+      ansible.windows.win_file:
+        path: "C:\\temp"
+        state: directory
+        
+    - name: jinja 2 templating of sftp file | Generate config file from template
+      ansible.builtin.template:
+        src: templates/sftp_commands.j2
+        dest: /tmp/sftp_commands.txt
+      delegate_to: localhost  
+
+    - name: Copy PSFTP to Windows Host
+      ansible.windows.win_copy:
+        src: "/tmp/sftp_commands.txt"
+        dest: "C:\\temp\\sftp_commands.txt"
+             
+    - name: Upload found files via SFTP
+      ansible.builtin.win_shell: |
+        C:\\psftp.exe 192.168.1.13 -l nrathi -pw primod123 -b C:\temp\sftp_commands.txt
