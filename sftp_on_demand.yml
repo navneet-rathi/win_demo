@@ -67,6 +67,7 @@
       ansible.windows.win_copy:
         src: "{{ item }}"
         dest: "C:\\archive"
+        remote_src: true
       with_items: "{{ found_files.files | map(attribute='path') | list }}"
 
     - name: Remove the original file
