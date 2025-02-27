@@ -42,9 +42,12 @@
 
     - name: Ensure temp directory exists
       ansible.windows.win_file:
-        path: "C:\\temp"
+        path: "C:\\{{ item }}"
         state: directory
-        
+      with_items:
+        - "temp"
+        - "archive"
+
     - name: jinja 2 templating of sftp file | Generate config file from template
       ansible.builtin.template:
         src: templates/sftp_commands.j2
@@ -59,3 +62,15 @@
     - name: Upload found files via SFTP
       ansible.builtin.win_shell: |
         C:\\psftp.exe -hostkey "ssh-ed25519 255 SHA256:MmCr8CMppHWt6Mc56mzRhID7b1kWAsjowvLjJj6+lZo" 192.168.1.13 -l nrathi -pw primod123 -b C:\temp\sftp_commands.txt
+
+    - name: Copy file to destination
+      ansible.windows.win_copy:
+        src: "{{ item }}"
+        dest: C:\\archive
+      with_items: "{{ found_files.files | map(attribute='path') | list }}"
+
+    - name: Remove the original file
+      ansible.windows.win_file:
+        path: "{{ item }}"
+        state: absent
+      with_items: "{{ found_files.files | map(attribute='path') | list }}"       
