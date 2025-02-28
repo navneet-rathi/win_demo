@@ -1,7 +1,7 @@
  ### Tested with powershell 7 as power shell 5.1 does not support skip cert check 
  $FolderPath = "C:\Users\nrathi\Desktop\navneet"
  $LogFile = "C:\temp\file_check.log"
- $Interval = 1  # Time in seconds before checking again
+ $Interval = 60  # Time in seconds before checking again
  
  # Red Hat Ansible Automation Platform (AAP) API Details
  $ApiUrl = "http://192.168.1.14:5000/endpoint"
@@ -31,6 +31,7 @@
              Write-Host "✅ Ansible AAP Job Triggered Successfully!"
              Add-Content -Path $LogFile -Value "$Timestamp ✅ Ansible AAP Job Triggered Successfully!"
              #Move-Item -Path "C:\Users\nrathi\Desktop\navneet\*" -Destination "C:\Users\nrathi\Desktop\nrathi\" 
+             Start-Sleep -Seconds $Interval 
  
          } catch {
              Write-Host "❌ Failed to trigger Ansible AAP Job!"
@@ -45,6 +46,7 @@
          Add-Content -Path $LogFile -Value $Message
      }
  
-     Start-Sleep -Seconds $Interval  # Wait 1 second before checking again
+      # Wait 1 second before checking again
+      Start-Sleep -Seconds 2
  } 
  

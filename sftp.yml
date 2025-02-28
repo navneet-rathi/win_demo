@@ -50,17 +50,20 @@
       ansible.builtin.template:
         src: templates/sftp_commands.j2
         dest: /tmp/sftp_commands.txt
-      delegate_to: localhost  
+      delegate_to: localhost
+      with_items: "{{ found_files.files | map(attribute='path') | list }}"  
 
     - name: Copy PSFTP from ctrl to Windows Host 
       ansible.windows.win_copy:
         src: "/tmp/sftp_commands.txt"
         dest: "C:\\temp\\sftp_commands.txt"
+      with_items: "{{ found_files.files | map(attribute='path') | list }}"  
              
     - name: Upload found files via SFTP
       ansible.builtin.win_shell: |
         C:\\psftp.exe -hostkey "ssh-ed25519 255 SHA256:MmCr8CMppHWt6Mc56mzRhID7b1kWAsjowvLjJj6+lZo" 192.168.1.13 -l nrathi -pw primod123 -b C:\temp\sftp_commands.txt
-
+      with_items: "{{ found_files.files | map(attribute='path') | list }}"
+      
     - name: Copy file to destination
       ansible.windows.win_copy:
         src: "{{ item }}"
