@@ -1,0 +1,6 @@
+- name: Launch Google Chrome
+  hosts: all
+  tasks:
+    - name: Start Chrome browser
+      ansible.windows.win_shell: |
+        Start-Process "C:\Program Files\Google\Chrome\Application\chrome.exe"
