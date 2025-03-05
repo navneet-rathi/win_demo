@@ -12,7 +12,6 @@
       ansible.builtin.get_url:
         url: 'https://github.com/prometheus-community/windows_exporter/releases/latest/download/windows_exporter-0.22.0-amd64.msi'
         dest: '/tmp/windows_exporter-0.22.0-amd64.msi'
-        #checksum: 'sha256:{{ windows_exporter_checksum_url }}'
         mode: 0644
       delegate_to: localhost
       check_mode: false
