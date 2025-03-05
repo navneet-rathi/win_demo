@@ -1,6 +1,12 @@
 - name: Install & Configure Windows Exporter for USB Monitoring
   hosts: windows
   tasks:
+
+    - name: Create Directory if it does not exist
+      ansible.builtin.win_file:
+        path: "C:\\Temp"
+        state: directory
+
     - name: Download Windows Exporter
       ansible.builtin.win_get_url:
         url: "https://github.com/prometheus-community/windows_exporter/releases/latest/download/windows_exporter-0.22.0-amd64.msi"
