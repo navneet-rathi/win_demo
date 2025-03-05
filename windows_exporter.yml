@@ -1,0 +1,11 @@
+---
+- name: 'Setup the Windows Exporter'
+  hosts: windows_exporter
+
+  roles:
+    - role: antmelekhin.windows_exporter
+      windows_exporter_collectors_enabled: '[defaults],memory'
+      windows_exporter_collectors:
+        - name: service
+          flags:
+            services-where: Name='windows_exporter'

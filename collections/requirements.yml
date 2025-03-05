@@ -1,4 +1,7 @@
 ---
+roles:
+  - name: antmelekhin.windows_exporter
+
 collections:
   - name: community.general
   - name: ansible.posix
