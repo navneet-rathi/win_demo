@@ -10,7 +10,7 @@
     - name: 'Download the Windows Exporter package to a local folder'
       become: false
       ansible.builtin.get_url:
-        url: 'https://github.com/prometheus-community/windows_exporter/releases/latest/download/windows_exporter-0.22.0-amd64.msi'
+        url: 'https://github.com/prometheus-community/windows_exporter/releases/download/v0.22.0/windows_exporter-0.22.0-amd64.msi'
         dest: '/tmp/windows_exporter-0.22.0-amd64.msi'
         mode: 0644
       delegate_to: localhost
