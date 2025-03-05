@@ -19,7 +19,7 @@
         state: present
 
     - name: Enable USB Monitoring
-      ansible.builtin.win_lineinfile:
+      community.windows.win_lineinfile:
         path: "C:\\Program Files\\windows_exporter\\windows_exporter.yaml"
         line: "  enabled: cpu, memory, logical_disk, usb"
         insertafter: "collectors:"
