@@ -1,6 +1,6 @@
 ---
 - name: 'Setup the Windows Exporter'
-  hosts: windows_exporter
+  hosts: all
   roles:
     - role: antmelekhin.windows_exporter
       windows_exporter_collectors_enabled: '[defaults],memory'
