@@ -1,2 +1,4 @@
 roles:
   - name: antmelekhin.windows_exporter
+    src: https://github.com/navneet-rathi/ansible-role-windows-exporter
+    version: main 
