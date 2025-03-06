@@ -26,8 +26,8 @@
       ansible.windows.win_user:
         name: "{{ new_user }}"
         password: "{{ generated_password }}"
-        description: "This is a new user"
-        user_cannot_change_password: true
+        description: "This is a {{ new_user }}"
+        user_cannot_change_password: false
         groups:
           - Users
           - Remote Desktop Users
@@ -41,7 +41,7 @@
         name: "{{ new_user }}"
         password: "{{ generated_password }}"
         description: "Administrator user account"
-        user_cannot_change_password: true
+        user_cannot_change_password: false
         groups:
           - Administrators
           - Remote Desktop Users
