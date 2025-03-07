@@ -1,5 +1,5 @@
 - name: Deploy Password Age Monitoring Script
-  hosts: windows_servers
+  hosts: all
   vars:
     script_name: password_age.ps1
   tasks:
