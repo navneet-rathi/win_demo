@@ -35,5 +35,6 @@
               interval: PT1H  # Runs every 1 hour
               duration: P1D    # Ensures it repeats for the whole day
         username: "SYSTEM"
+        run_level: highest
         state: present
         enabled: yes
