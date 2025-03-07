@@ -1,6 +1,6 @@
  # Define log file for debugging
  $logFile = "C:\metrics\password_age_debug.log"
- $passwordMetricsFile = "C:\Program Files\windows_exporter\textfile\password_age.prom"
+ $passwordMetricsFile = "C:\Program Files\windows_exporter\textfile_inputs\password_age.prom"
  
  # Start logging
  "=== Running password_age.ps1 ===" | Out-File -Append -Encoding UTF8 $logFile
