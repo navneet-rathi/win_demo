@@ -3,11 +3,14 @@
   vars:
     script_name: password_age.ps1
   tasks:
-    - name: Ensure the metrics directory exists
+    - name: Ensure the scripts and metrics directory exists
       ansible.windows.win_file:
-        path: C:\metrics
+        path: "C:\\{{ item }}"
         state: directory
-      
+      loop: 
+        - "metrics"
+        - "scripts"
+
     - name: Copy PowerShell script to Windows
       ansible.windows.win_copy:
         src: "{{ script_name }}"
