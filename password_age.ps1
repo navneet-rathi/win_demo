@@ -62,7 +62,7 @@
          }
  
          "Final Password Age for ${user}: ${passwordAge} seconds" | Out-File -Append -Encoding UTF8 $logFile
-         $metrics += "windows_user_password_age{name= ${user}} ${passwordAge}"
+         $metrics += "windows_user_password_age{name= ${\"user\"}} ${passwordAge}"
      } else {
          "No 'Password last set' found for ${user}. Skipping." | Out-File -Append -Encoding UTF8 $logFile
      }
