@@ -1,7 +1,7 @@
 - name: Deploy Password Age Monitoring Script
   hosts: windows_servers
   vars:
-  script_name: password_age.ps1
+    script_name: password_age.ps1
   tasks:
     - name: Ensure the metrics directory exists
       ansible.windows.win_file:
