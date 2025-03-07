@@ -1,0 +1,26 @@
+- name: Deploy Password Age Monitoring Script
+  hosts: windows_servers
+  tasks:
+    - name: Copy PowerShell script to Windows
+      win_copy:
+        src: password_age.ps1
+        dest: C:\\scripts\\password_age.ps1
+
+    - name: Ensure the metrics directory exists
+      win_file:
+        path: C:\metrics
+        state: directory
+
+    - name: Create a scheduled task to run daily
+      win_scheduled_task:
+        name: "Password Age Monitoring"
+        description: "Check all user password ages and export to Prometheus"
+        actions:
+          - path: "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe"
+            arguments: "-ExecutionPolicy Bypass -File C:\\scripts\\password_age.ps1"
+        triggers:
+          - type: daily
+            start_boundary: "2024-03-07T02:00:00"
+        username: "SYSTEM"
+        state: present
+        enabled: yes
