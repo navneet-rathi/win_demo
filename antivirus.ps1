@@ -7,7 +7,7 @@ foreach ($av in $antivirusProducts) {
 }
 
 if ($metrics.Count -gt 0) {
-    $metrics -join "`n" | Out-File -Encoding ASCII "C:\metrics\antivirus_status.prom"
+    $metrics -join "`n" | Out-File -Encoding ASCII  "C:\Program Files\windows_exporter\textfile_inputs\antivirus_status.prom "
 } else {
     "windows_antivirus_status{name=`"None`"} 0" | Out-File -Encoding ASCII "C:\Program Files\windows_exporter\textfile_inputs\antivirus_status.prom"
 } 
