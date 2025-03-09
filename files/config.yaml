@@ -1,0 +1,9 @@
+collectors:
+  enabled: cpu,net,service,textfile,diskdrive,logon,os,physical_disk
+collector:
+  service:
+    include: windows_exporter
+  textfile:
+    directories: "C:\\Program Files\\windows_exporter\\textfile_inputs"
+log:
+  level: warn
