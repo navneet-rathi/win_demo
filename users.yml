@@ -9,7 +9,7 @@
 ### This way we can have a long mapping of host and users for which we want to rotate the pass    
 ---
 - name: Sending notification to users for changing the password when password is not changed in 90 days
-  hosts: localhost
+  hosts: all
   gather_facts: false
   tasks:      
     - name: Genrate Email content to Send in Email
