@@ -12,6 +12,9 @@
   hosts: localhost
   gather_facts: false
   tasks:
+
+    - name: Gather data about the user
+      
     - name: Genrate Email content to Send in Email
       ansible.builtin.template:
         src: email_alert_password_html.j2
