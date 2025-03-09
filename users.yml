@@ -11,7 +11,10 @@
 - name: Sending notification to users for changing the password when password is not changed in 90 days
   hosts: all
   gather_facts: false
-  tasks:      
+  tasks:
+    - debug:
+        msg: "{{ ansible_eda.event }}"  
+            
     - name: Genrate Email content to Send in Email
       ansible.builtin.template:
         src: user_alert_email_html.j2
