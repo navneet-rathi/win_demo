@@ -33,12 +33,10 @@
         arguments: "/quiet /norestart"
         state: present
 
-    - name: Enable USB Monitoring
-      community.windows.win_lineinfile:
-        path: "C:\\Program Files\\windows_exporter\\windows_exporter.yaml"
-        line: "  enabled: cpu, memory, logical_disk, usb"
-        insertafter: "collectors:"
-        state: present
+    - name: Copy PowerShell script to Windows host
+      win_copy:
+        src: ./files/config.yaml
+        dest: "C:\\Program Files\\windows_exporter\\config.yaml"
 
     - name: Restart Windows Exporter Service
       ansible.builtin.win_service:
