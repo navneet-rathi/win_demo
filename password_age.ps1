@@ -62,9 +62,9 @@
          }
  
          "Final Password Age for ${user}: ${passwordAge} seconds" | Out-File -Append -Encoding UTF8 $logFile
-         $metrics += "windows_user_password_age{name=${user}} ${passwordAge}"
+         $metrics += "windows_user_password_age{name=`"${user}`"} ${passwordAge}"
      } else {
-         "No 'Password last set' found for ${user}. Skipping." | Out-File -Append -Encoding UTF8 $logFile
+         "No 'Password last set' found for `"${user}`". Skipping." | Out-File -Append -Encoding UTF8 $logFile
      }
  }
  
@@ -73,7 +73,7 @@
      $metrics -join "`n" | Out-File -Encoding ASCII $passwordMetricsFile
      "Metrics successfully written to {${passwordMetricsFile}}" | Out-File -Append -Encoding UTF8 $logFile
  } else {
-     "windows_user_password_age{name= 'None' } 0" | Out-File -Encoding ASCII $passwordMetricsFile
+     "windows_user_password_age{name= `"None`" } 0" | Out-File -Encoding ASCII $passwordMetricsFile
      "No valid password ages found. Writing default metric." | Out-File -Append -Encoding UTF8 $logFile
  }
  
