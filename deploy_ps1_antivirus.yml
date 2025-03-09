@@ -30,7 +30,7 @@
             arguments: "-ExecutionPolicy Bypass -File C:\\scripts\\{{ script_name }}"
         triggers:
           - type: daily
-            start_boundary: "2025-01-01T01:00:00"
+            start_boundary: "2025-01-01T00:00:00"
             repetition:
               interval: PT1M  # Runs every 1 minute
               duration: P1D    # Ensures it repeats for the whole day
