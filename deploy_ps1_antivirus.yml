@@ -32,7 +32,7 @@
           - type: daily
             start_boundary: "2025-01-01T01:00:00"
             repetition:
-              interval: PT1H  # Runs every 1 hour
+              interval: PT1M  # Runs every 1 minute
               duration: P1D    # Ensures it repeats for the whole day
         username: "SYSTEM"
         run_level: highest
