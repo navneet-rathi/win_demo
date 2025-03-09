@@ -11,10 +11,7 @@
 - name: Sending notification to users for changing the password when password is not changed in 90 days
   hosts: localhost
   gather_facts: false
-  tasks:
-
-    - name: Gather data about the user
-      
+  tasks:      
     - name: Genrate Email content to Send in Email
       ansible.builtin.template:
         src: user_alert_email_html.j2
