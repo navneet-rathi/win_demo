@@ -8,7 +8,7 @@
 #    username: user3   
 ### This way we can have a long mapping of host and users for which we want to rotate the pass    
 ---
-- name: Sending notification to users for changing the password
+- name: Sending notification to users for changing the password when password is not changed in 90 days
   hosts: localhost
   gather_facts: false
   tasks:
@@ -38,6 +38,6 @@
       run_once: true  
       delegate_to: 127.0.0.1
       changed_when: True
-      when:
-         - create|default(true)|bool == true
+      #when:
+      #   - create|default(true)|bool == true
  
