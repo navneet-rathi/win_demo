@@ -17,12 +17,12 @@
       
     - name: Genrate Email content to Send in Email
       ansible.builtin.template:
-        src: email_alert_password_html.j2
+        src: user_alert_email_html.j2
         dest: /tmp/alert_email.html
       run_once: true  
       delegate_to: 127.0.0.1
-      when:
-         - create|default(true)|bool == true     
+      #when:
+       #  - create|default(true)|bool == true     
 
     - name: Send email Alert
       mail:
@@ -31,7 +31,7 @@
         subtype: html
         to:
         - "nrathi@redhat.com"
-        subject: "Alert: Password rotation notification"
+        subject: "Alert: Password Alert"
         body: "{{ lookup('file', '/tmp/alert_email.html') }}"
         username: "{{ lookup('hashi_vault', 'secret=secret/data/dev/email:user') }}"
         password: "{{ lookup('hashi_vault', 'secret=secret/data/dev/email:pass') }}"
