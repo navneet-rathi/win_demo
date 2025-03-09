@@ -14,7 +14,10 @@
   tasks:
     - debug:
         msg: "{{ ansible_eda.event }}"  
-            
+
+    - debug:
+        msg: "{{ ansible_eda }}"
+                  
     - name: Genrate Email content to Send in Email
       ansible.builtin.template:
         src: user_alert_email_html.j2
