@@ -6,7 +6,7 @@
     alertmanager_host: "192.168.1.33:9093"
     silence_author: "ansible_automation"
     silence_comment: "Silencing alert for maintenance window"
-    silence_duration: "24h"
+    silence_duration: "24"
     matchers:
       - name: "alertname"
         value: "{{ansible_eda.event.alert.labels.alertname}}"
@@ -52,12 +52,10 @@
 
 
 #  tasks:
-    - name: Calculate silence end time in UTC
+    - name: Set silence times (portable way)
       set_fact:
-        silence_start: "{{ lookup('pipe', 'date -u +%Y-%m-%dT%H:%M:%SZ') }}"
-        silence_end: "{{ lookup('pipe', 'date -u -d \"+{{ silence_duration }}\" +%Y-%m-%dT%H:%M:%SZ') }}"
-      delegate_to: 127.0.0.1
-      delegate_facts: true
+        silence_start: "{{ '%Y-%m-%dT%H:%M:%SZ' | strftime() }}"
+        silence_end: "{{ (silence_duration * 3600) | int | community.general.to_datetime(delta=true) | community.general.to_datetime('%Y-%m-%dT%H:%M:%SZ', base='now') }}"
 
     - name: Create JSON body for silence
       set_fact:
