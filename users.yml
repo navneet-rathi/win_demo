@@ -11,6 +11,21 @@
 - name: Sending notification to users for changing the password when password is not changed in 90 days
   hosts: all
   gather_facts: false
+  vars:
+    alertmanager_host: "192.168.1.33:9093"
+    silence_author: "ansible_automation"
+    silence_comment: "Silencing alert for maintenance window"
+    silence_duration: "24h"
+    matchers:
+      - name: "alertname"
+        value: "UserPasswordExpired except Administrator"
+        isRegex: false
+      - name: "instance"
+        value: "{{ansible_eda.event.meta.headers.Host}}"
+        isRegex: false
+      - name: "name"
+        value: "{{ansible_eda.event.alert.labels.name }}"
+        isRegex: false        
   tasks:
     - debug:
         msg: "{{ ansible_eda.event }}"  
@@ -43,4 +58,44 @@
       changed_when: True
       #when:
       #   - create|default(true)|bool == true
- 
+
+
+#  tasks:
+    - name: Calculate silence end time in UTC
+      set_fact:
+        silence_start: "{{ lookup('pipe', 'date -u +%Y-%m-%dT%H:%M:%SZ') }}"
+        silence_end: "{{ lookup('pipe', 'date -u -d \"+{{ silence_duration }}\" +%Y-%m-%dT%H:%M:%SZ') }}"
+
+    - name: Create JSON body for silence
+      set_fact:
+        silence_payload: |
+          {
+            "matchers": [
+              {% for m in matchers %}
+              {
+                "name": "{{ m.name }}",
+                "value": "{{ m.value }}",
+                "isRegex": {{ m.isRegex | default(false) | lower }}
+              }{% if not loop.last %},{% endif %}
+              {% endfor %}
+            ],
+            "startsAt": "{{ silence_start }}",
+            "endsAt": "{{ silence_end }}",
+            "createdBy": "{{ silence_author }}",
+            "comment": "{{ silence_comment }}"
+          }
+
+    - name: POST silence to Alertmanager
+      uri:
+        url: "{{ alertmanager_host }}/api/v2/silences"
+        method: POST
+        headers:
+          Content-Type: "application/json"
+        body: "{{ silence_payload }}"
+        body_format: json
+        status_code: 200
+        return_content: yes
+
+    - name: Show response
+      debug:
+        var: silence_payload
