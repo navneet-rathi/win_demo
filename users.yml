@@ -30,8 +30,7 @@
         dest: /tmp/alert_email.html
       run_once: true  
       delegate_to: 127.0.0.1
-      #when:
-       #  - create|default(true)|bool == true     
+ 
 
     - name: Send email Alert
       mail:
@@ -47,51 +46,49 @@
       run_once: true  
       delegate_to: 127.0.0.1
       changed_when: True
-      #when:
-      #   - create|default(true)|bool == true
-
+      
 
 #  tasks:
-    - name: Set silence times (portable way)
-      set_fact:
-        silence_start: "{{ '%Y-%m-%dT%H:%M:%SZ' | strftime() }}"
-        silence_end: "{{ (silence_duration * 3600) | int | community.general.to_datetime(delta=true) | community.general.to_datetime('%Y-%m-%dT%H:%M:%SZ', base='now') }}"
+    # - name: Set silence times (portable way)
+    #   set_fact:
+    #     silence_start: "{{ '%Y-%m-%dT%H:%M:%SZ' | strftime() }}"
+    #     silence_end: "{{ (silence_duration * 3600) | int | community.general.to_datetime(delta=true) | community.general.to_datetime('%Y-%m-%dT%H:%M:%SZ', base='now') }}"
 
-    - name: Create JSON body for silence
-      set_fact:
-        silence_payload: |
-          {
-            "matchers": [
-              {% for m in matchers %}
-              {
-                "name": "{{ m.name }}",
-                "value": "{{ m.value }}",
-                "isRegex": {{ m.isRegex | default(false) | lower }}
-              }{% if not loop.last %},{% endif %}
-              {% endfor %}
-            ],
-            "startsAt": "{{ silence_start }}",
-            "endsAt": "{{ silence_end }}",
-            "createdBy": "{{ silence_author }}",
-            "comment": "{{ silence_comment }}"
-          }
-      delegate_to: 127.0.0.1
-      delegate_facts: true          
+    # - name: Create JSON body for silence
+    #   set_fact:
+    #     silence_payload: |
+    #       {
+    #         "matchers": [
+    #           {% for m in matchers %}
+    #           {
+    #             "name": "{{ m.name }}",
+    #             "value": "{{ m.value }}",
+    #             "isRegex": {{ m.isRegex | default(false) | lower }}
+    #           }{% if not loop.last %},{% endif %}
+    #           {% endfor %}
+    #         ],
+    #         "startsAt": "{{ silence_start }}",
+    #         "endsAt": "{{ silence_end }}",
+    #         "createdBy": "{{ silence_author }}",
+    #         "comment": "{{ silence_comment }}"
+    #       }
+    #   delegate_to: 127.0.0.1
+    #   delegate_facts: true          
 
 
-    - name: POST silence to Alertmanager
-      uri:
-        url: "{{ alertmanager_host }}/api/v2/silences"
-        method: POST
-        headers:
-          Content-Type: "application/json"
-        body: "{{ silence_payload }}"
-        body_format: json
-        status_code: 200
-        return_content: yes
-      delegate_to: 127.0.0.1
+    # - name: POST silence to Alertmanager
+    #   uri:
+    #     url: "{{ alertmanager_host }}/api/v2/silences"
+    #     method: POST
+    #     headers:
+    #       Content-Type: "application/json"
+    #     body: "{{ silence_payload }}"
+    #     body_format: json
+    #     status_code: 200
+    #     return_content: yes
+    #   delegate_to: 127.0.0.1
 
-    - name: Show response
-      debug:
-        var: silence_payload
-      delegate_to: 127.0.0.1        
+    # - name: Show response
+    #   debug:
+    #     var: silence_payload
+    #   delegate_to: 127.0.0.1        
