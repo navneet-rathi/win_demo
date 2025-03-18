@@ -3,7 +3,6 @@
   hosts: all
   gather_facts: yes
   become: false
-
   vars:
     defender_action: "disable"  # Options: disable / enable
     # We can take this from servey
