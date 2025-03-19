@@ -1,0 +1,11 @@
+---
+- name: open firewall port on controller
+  hosts: all
+  gather_facts: true
+  become: true
+  tasks:
+    - name: Allow traffic on port 5000 on controller
+      ansible.posix.firewalld:
+        port: 5000/tcp
+        permanent: true
+        state: enabled
