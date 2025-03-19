@@ -52,3 +52,10 @@
         run_job_template:
           name: '01-js-ntp-client'
           organization: 'Default'
+
+    - name: R5 - Windows defender is disabled"
+      condition: event.payload.action is defined and event.payload.action == "windows defender disabled"
+      action:
+        run_job_template:
+          name: '01-js-windows-defender'
+          organization: 'Default'          
