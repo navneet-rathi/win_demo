@@ -5,7 +5,7 @@
   become: false
 
   vars:
-    defender_action: "disable"  # Options: "disable" or "enable"
+    defender_action: "enable"  # Options: "disable" or "enable"
 
   tasks:
     - name: Display OS version
