@@ -42,4 +42,4 @@
       win_reboot:
         msg: "Rebooting after Defender policy change..."
         reboot_timeout: 600
-      when: defender_action == "disable" 
+      when: defender_action == "disable"
