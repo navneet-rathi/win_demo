@@ -35,10 +35,11 @@
         path: HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender
         name: DisableAntiSpyware
         state: absent
+      register: def_en  
       when: defender_action == "enable"
 
     - name: Optional - Reboot host after Defender change
       win_reboot:
         msg: "Rebooting after Defender policy change..."
         reboot_timeout: 600
-      when: defender_action == "disable"
+      when: defender_action == "disable" or defender_action == "enable" 
