@@ -1,86 +1,45 @@
 ---
-- name: Manage Windows Defender or MSE via Registry
-  hosts: all
+- name: Enable or Disable Windows Defender on Windows Server 2022
+  hosts: windows
   gather_facts: yes
   become: false
+
   vars:
-    defender_action: "disable"  # Options: disable / enable
-    # We can take this from servey
+    defender_action: "disable"  # Options: "disable" or "enable"
+
   tasks:
 
-    - name: Display OS Version
+    - name: Display OS version
       debug:
         msg: "Windows Version: {{ ansible_distribution_version }}"
 
-    # Windows 10 or higher (Defender)
-    - name: Disable Defender (Registry) on Windows 10+
+    - name: Disable Defender - Realtime Protection (PowerShell)
+      win_shell: |
+        Set-MpPreference -DisableRealtimeMonitoring $true
+      when: defender_action == "disable"
+
+    - name: Enable Defender - Realtime Protection (PowerShell)
+      win_shell: |
+        Set-MpPreference -DisableRealtimeMonitoring $false
+      when: defender_action == "enable"
+
+    - name: Disable Defender via Registry Policy (optional - prevents automatic re-enabling)
       win_regedit:
         path: HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender
         name: DisableAntiSpyware
         data: 1
         type: dword
-      register: dis_def_win10  
-      when:
-        - ansible_distribution_version is version('10', '>=')
-        - defender_action == "disable"
+      when: defender_action == "disable"
 
-    - name: Enable Defender (Registry) on Windows 10+
+    - name: Enable Defender via Registry Policy (removes the disabling key)
       win_regedit:
         path: HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender
         name: DisableAntiSpyware
         state: absent
-      register: en_def_win10  
-      when:
-        - ansible_distribution_version is version('10', '>=')
-        - defender_action == "enable"
+      when: defender_action == "enable"
 
-    # Windows 10 - Disable Realtime Monitoring
-    - name: Set Real-Time Protection OFF on Windows 10+
-      win_regedit:
-        path: HKLM:\SOFTWARE\Microsoft\Windows Defender\Real-Time Protection
-        name: DisableRealtimeMonitoring
-        data: 1
-        type: dword
-      when:
-        - ansible_distribution_version is version('10', '>=')
-        - defender_action == "disable"
-
-    - name: Set Real-Time Protection ON on Windows 10+
-      win_regedit:
-        path: HKLM:\SOFTWARE\Microsoft\Windows Defender\Real-Time Protection
-        name: DisableRealtimeMonitoring
-        data: 0
-        type: dword
-      when:
-        - ansible_distribution_version is version('10', '>=')
-        - defender_action == "enable"
-
-    # Windows 7 - MSE Real-Time Protection
-    - name: Disable MSE Real-Time Protection on Windows 7
-      win_regedit:
-        path: HKLM:\SOFTWARE\Microsoft\Microsoft Antimalware\Real-Time Protection
-        name: DisableRealtimeMonitoring
-        data: 1
-        type: dword
-      register: dis_def_win7         
-      when:
-        - ansible_distribution_version is version('10', '<')
-        - defender_action == "disable"
-
-    - name: Enable MSE Real-Time Protection on Windows 7
-      win_regedit:
-        path: HKLM:\SOFTWARE\Microsoft\Microsoft Antimalware\Real-Time Protection
-        name: DisableRealtimeMonitoring
-        data: 0
-        type: dword
-      register: en_def_win7         
-      when:
-        - ansible_distribution_version is version('10', '<')
-        - defender_action == "enable"
-
-    - name: Reboot the host if required
+    - name: Optional - Reboot host after Defender change
       win_reboot:
-        msg: "Rebooting after Defender registry changes"
+        msg: "Rebooting after Defender policy change..."
         reboot_timeout: 600
-      when: dis_def_win10.changed or en_def_win10.changed or dis_def_win7.changed or en_def_win7.changed 
-          
+      when: defender_action == "disable"
