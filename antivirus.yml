@@ -8,7 +8,6 @@
     defender_action: "disable"  # Options: "disable" or "enable"
 
   tasks:
-
     - name: Display OS version
       debug:
         msg: "Windows Version: {{ ansible_distribution_version }}"
