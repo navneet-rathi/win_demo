@@ -1,6 +1,6 @@
 ---
 - name: Enable or Disable Windows Defender on Windows Server 2022
-  hosts: windows
+  hosts: all
   gather_facts: yes
   become: false
 
