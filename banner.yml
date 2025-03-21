@@ -1,8 +1,8 @@
 ---
-- name: Set Windows 7 Login Banner
+- name: Set Windows Login Banner
   hosts: all
   tasks:
-    - name: Set banner caption (title) for Windows 7
+    - name: Set banner caption (title) for Windows
       ansible.windows.win_regedit:
         path: HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System
         name: LegalNoticeCaption
@@ -10,7 +10,7 @@
         type: String
       register: title
 
-    - name: Set banner text (body) for Windows 7
+    - name: Set banner text (body) for Windows 
       ansible.windows.win_regedit:
         path: HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System
         name: LegalNoticeText
