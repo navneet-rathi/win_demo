@@ -29,7 +29,7 @@
             extra_vars:
               usb_disable: 'false'
 
-    - name: R3 - Send Notifucation"
+    - name: R3 - Send Notifucation
       condition: event.payload.action is defined and event.payload.action == "Rotate password"
       action:
         run_job_template:
@@ -39,23 +39,30 @@
             extra_vars:
               hosts: "{{ event.payload.deviceIp }}"
 
-    - name: R4 - Setup Banner"
+    - name: R4 - Setup Banner
       condition: event.payload.action is defined and event.payload.action == "setup banner"
       action:
         run_job_template:
           name: '01-js-banner'
           organization: 'Default'
 
-    - name: R5 - Sync Time"
+    - name: R5 - Sync Time
       condition: event.payload.action is defined and event.payload.action == "sync time"
       action:
         run_job_template:
           name: '01-js-ntp-client'
           organization: 'Default'
 
-    - name: R5 - Windows defender is disabled"
+    - name: R6 - Windows defender is disabled
       condition: event.payload.action is defined and event.payload.action == "windows defender disabled"
       action:
         run_job_template:
           name: '01-js-windows-defender'
-          organization: 'Default'          
+          organization: 'Default'
+
+    - name: R7 - Windows ping
+      condition: event.payload.action is defined and event.payload.action == "windows ping"
+      action:
+        run_job_template:
+          name: 'win_ping'
+          organization: 'Default'    
