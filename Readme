@@ -8,7 +8,8 @@ This repo have some ansible automation use cases
 6. Sync Windows machne with rhel time server
 7. Send a Notification using mail about host,username,random_password to pre_configured user
 8. check ssl of site and send mail Notification
-9 Linux Server patching and Basic Reporting. 
+9. Linux Server patching and Basic Reporting.
+10. EDA windows basic ping to test if server is reachable 
 
 EDA sample command
 curl -H 'Content-Type: application/json' -d "{\"deviceId\" : \"id representing a device uniquely in SmartHub INFER\",\"deviceName\": \"Friendly name of the device in SmartHub INFER\",\"orgName\": \"Org name in SmartHub INFER\",\"deviceIp\" : \"Leena-Win\", \"action\" : \"disallow usb storage\" }" 127.0.0.1:5000/endpoint
