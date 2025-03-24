@@ -1,7 +1,8 @@
 ---
 - name: Demo only Win_ping
   hosts: all
-  #become: true
+  become: true
+
   gather_facts: true
 
   tasks:
@@ -10,6 +11,6 @@
 
    - name: Display OS version
      debug:
-       msg: "Windows Version: {{ ansible_distribution_version }}"  
+       msg: "Windows Version: {{ ansible_distribution }}"  
    
 
