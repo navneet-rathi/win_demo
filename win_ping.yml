@@ -2,7 +2,14 @@
 - name: Demo only Win_ping
   hosts: all
   become: true
+  gather_facts: true
+
   tasks:
    - name: win ping and test if server is reachable over WinRM
      win_ping:
+
+   - name: Display OS version
+     debug:
+       msg: "Windows Version: {{ ansible_distribution_version }}"  
+   
 
