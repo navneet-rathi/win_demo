@@ -1,0 +1,8 @@
+---
+- name: Demo only Win_ping
+  hosts: all
+  become: true
+  tasks:
+   - name: win ping and test if server is reachable over WinRM
+     win_ping:
+
