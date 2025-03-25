@@ -45,24 +45,30 @@
         run_job_template:
           name: '01-js-banner'
           organization: 'Default'
-
+          job_args:
+            limit: "{{ event.payload.deviceIp }}"
     - name: R5 - Sync Time
       condition: event.payload.action is defined and event.payload.action == "sync time"
       action:
         run_job_template:
           name: '01-js-ntp-client'
           organization: 'Default'
-
+          job_args:
+            limit: "{{ event.payload.deviceIp }}"
+            
     - name: R6 - Windows defender is disabled
       condition: event.payload.action is defined and event.payload.action == "windows defender disabled"
       action:
         run_job_template:
           name: '01-js-windows-defender'
           organization: 'Default'
-
+          job_args:
+            limit: "{{ event.payload.deviceIp }}"
     - name: R7 - Windows ping
       condition: event.payload.action is defined and event.payload.action == "windows ping"
       action:
         run_job_template:
           name: 'win_ping'
-          organization: 'Default'    
+          organization: 'Default'
+          job_args:
+            limit: "{{ event.payload.deviceIp }}"              
