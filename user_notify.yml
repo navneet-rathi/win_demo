@@ -1,0 +1,48 @@
+---
+- name: Sending notification to users for changing the password when password is not changed in 90 days
+  hosts: all
+  gather_facts: false
+  vars:
+    alertmanager_host: "192.168.1.33:9093"
+    silence_author: "ansible_automation"
+    silence_comment: "Silencing alert for maintenance window"
+    silence_duration: "24"
+    matchers:
+      - name: "alertname"
+        value: "{{ansible_eda.event.alert.labels.alertname}}"
+        isRegex: false
+      - name: "instance"
+        value: "{{ansible_eda.event.meta.headers.Host}}"
+        isRegex: false
+      - name: "name"
+        value: "{{ansible_eda.event.alert.labels.name }}"
+        isRegex: false        
+  tasks:
+    - debug:
+        msg: "{{ ansible_eda.event }}"  
+
+    - debug:
+        msg: "{{ ansible_eda }}"
+                  
+    - name: Genrate Email content to Send in Email
+      ansible.builtin.template:
+        src: email_alert_password_html.j2
+        dest: /tmp/alert_email.html
+      run_once: true  
+      delegate_to: 127.0.0.1
+ 
+
+    - name: Send email Alert
+      mail:
+        host: smtp.gmail.com
+        port: 587
+        subtype: html
+        to:
+        - "nrathi@redhat.com"
+        subject: "Alert: Password update on {{ inventory_hostname }}"
+        body: "{{ lookup('file', '/tmp/alert_email.html') }}"
+        username: "dmeonavneet@gmail.com"
+        password: "rbfqhoincpyouxqk"
+      run_once: true  
+      delegate_to: 127.0.0.1
+      changed_when: True       
