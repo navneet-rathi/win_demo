@@ -64,8 +64,21 @@
           organization: 'Default'
           job_args:
             limit: "{{ event.payload.deviceIp }}"
+            extra_vars:
+              defender_action: 'disable'
 
-    - name: R7 - Windows ping
+    - name: R7 - Windows defender is disabled
+      condition: event.payload.action is defined and event.payload.action == "windows defender enable"
+      action:
+        run_job_template:
+          name: '01-js-windows-defender'
+          organization: 'Default'
+          job_args:
+            limit: "{{ event.payload.deviceIp }}"
+            extra_vars:
+              defender_action: 'enable'              
+
+    - name: R8 - Windows ping
       condition: event.payload.action is defined and event.payload.action == "windows ping"
       action:
         run_job_template:
