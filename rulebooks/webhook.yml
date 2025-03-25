@@ -36,8 +36,7 @@
           name: '01-js-user-notification'
           organization: 'Default'
           job_args:
-            extra_vars:
-              hosts: "{{ event.payload.deviceIp }}"
+            limit: "{{ event.payload.deviceIp }}"
 
     - name: R4 - Setup Banner
       condition: event.payload.action is defined and event.payload.action == "setup banner"
