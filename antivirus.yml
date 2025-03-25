@@ -14,7 +14,7 @@
 
     - name: Disable Defender - Realtime Protection (PowerShell)
       win_shell: |
-        Set-MpPreference -DisableRealtimeMonitoring $true
+        Set-ItemProperty 'HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender' DisableAntiSpyware 1
       when: defender_action == "disable"
 
     - name: Enable Defender - Realtime Protection (PowerShell)
