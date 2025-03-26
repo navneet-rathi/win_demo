@@ -1,0 +1,11 @@
+---
+- name: start a command prompt
+  hosts: all
+  tasks:
+      - name: Run a cmd.exe command
+        community.windows.psexec:
+          hostname: "{{ inventory_hostname }}"
+          connection_username: nrathi
+          connection_password: primod123
+          executable: cmd.exe
+          arguments: /c echo Hello World
