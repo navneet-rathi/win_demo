@@ -5,7 +5,7 @@
   tasks:
       - name: Run a cmd.exe command
         community.windows.psexec:
-          hostname: "{{ inventory_hostname }}"
+          hostname: "192.168.1.13"
           connection_username: nrathi
           connection_password: primod123
           executable: cmd.exe
