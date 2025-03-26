@@ -3,11 +3,9 @@
   hosts: all
   gather_facts: false
   tasks:
-      - name: Run a cmd.exe command
-        community.windows.psexec:
-          hostname: "192.168.1.13"
-          connection_username: nrathi
-          connection_password: primod123
-          executable: cmd.exe
-          arguments: /c echo Hello World
-        delegate_to: localhost  
+#      - name: Run a cmd.exe command
+    - name: Run regedit.exe locally (on target node) as SYSTEM and interactively
+      community.windows.win_psexec:
+        command: regedit.exe
+        interactive: true
+        system: true
