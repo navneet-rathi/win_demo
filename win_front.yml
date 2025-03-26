@@ -6,6 +6,6 @@
 #      - name: Run a cmd.exe command
     - name: Run regedit.exe locally (on target node) as SYSTEM and interactively
       community.windows.win_psexec:
-        command: regedit.exe
+        command: cmd.exe
         interactive: true
-        system: true
+        #system: true
