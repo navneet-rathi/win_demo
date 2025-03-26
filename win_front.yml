@@ -10,3 +10,4 @@
           connection_password: primod123
           executable: cmd.exe
           arguments: /c echo Hello World
+        delegate_to: localhost  
