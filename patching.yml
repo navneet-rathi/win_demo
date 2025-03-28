@@ -6,7 +6,6 @@
   vars:
     report_file: "/tmp/patch_report_{{ inventory_hostname }}.txt"
     #alert_threshold: 5  # Number of days left before a patch is applied
-
   tasks:
     - name: Check for available updates before patching
       ansible.builtin.yum:
