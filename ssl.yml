@@ -41,8 +41,8 @@
         - "nrathi@redhat.com"
         subject: "Alert: cert for {{ site_url }} is expiring in {{ expire_days }} days"
         body: "{{ lookup('file', '/tmp/alert_email.html') }}"
-        username: "{{ lookup('hashi_vault', 'secret=secret/data/dev/email:user') }}"
-        password: "{{ lookup('hashi_vault', 'secret=secret/data/dev/email:pass') }}"
+        username: "dmeonavneet@gmail.com"
+        password: "rbfqhoincpyouxqk"
       when: expire_days | int <= "{{ worn }}"| int
       vars:
         expire_days: "{{ (( cert.not_after | to_datetime('%Y%m%d%H%M%SZ')) - (ansible_date_time.iso8601 | to_datetime('%Y-%m-%dT%H:%M:%SZ')) ).days }}"        
