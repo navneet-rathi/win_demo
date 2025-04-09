@@ -11,6 +11,4 @@
 
    - name: Display OS version
      debug:
-       msg: "Windows Version: {{ ansible_distribution }}"  
-   
-
+       msg: "Windows Version: {{ ansible_distribution }}"
