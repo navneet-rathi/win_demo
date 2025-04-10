@@ -6,7 +6,7 @@
       ansible.windows.win_regedit:
         path: HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System
         name: LegalNoticeCaption
-        data: "Sandesh Authorized Access Only"
+        data: "Reserve Bank Of India Authorized Access Only"
         type: String
       register: title
 
@@ -14,7 +14,7 @@
       ansible.windows.win_regedit:
         path: HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System
         name: LegalNoticeText
-        data: "This is a secure system of Reserv Bank of India. Unauthorized access is prohibited.This system is under the servelance and any auauthorized access will be reported. Powered by Ansible Automation Platform Done by NNR"
+        data: "This is a secure system of Reserv Bank of India. Unauthorized access is prohibited.This system is under the servelance and any auauthorized access will be reported. Powered by Ansible Automation Platform."
         type: String
       register: content  
 
