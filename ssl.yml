@@ -1,9 +1,9 @@
 ---
 - name: check the certs 
   hosts: localhost
-#  connection: local
+  connection: local
   vars:
-    worn: 365
+    worn: 90
     user_email: nrathi@redhat.com
     site_url: www.google.com
   #vars_files:
