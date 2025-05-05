@@ -6,6 +6,9 @@
     worn: 90
     user_email: nrathi@redhat.com
     site_url: www.google.com
+    rx:
+      - nrathi@redhat.com
+      - vijay9867206455@gmail.com
   #vars_files:
   #  - vars.yml
   tasks:
@@ -37,8 +40,7 @@
         host: smtp.gmail.com
         port: 587
         subtype: html
-        to:
-        - "nrathi@redhat.com"
+        to: "{{ rx }}"
         subject: "Alert: cert for {{ site_url }} is expiring in {{ expire_days }} days"
         body: "{{ lookup('file', '/tmp/alert_email.html') }}"
         username: "dmeonavneet@gmail.com"
