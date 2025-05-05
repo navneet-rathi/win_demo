@@ -14,7 +14,7 @@
   tasks:
     - name: Get a cert from an https port
       community.crypto.get_certificate:
-        host: "{{ site_url }}"
+        host: "{{ site_url|regex_replace('^https://', '') }}"
         port: 443
       delegate_to: localhost
       register: cert
