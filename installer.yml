@@ -9,12 +9,12 @@
         path: "C:\\Temp"
         state: directory
 
-    - name: Download Windows Exporter
+    - name: Download Windows Software package
       ansible.builtin.win_get_url:
         url: "https://www.7-zip.org/a/7z2409-x64.exe"
         dest: "C:\\Temp\\7z2409-x64.exe"
 
-    - name: Install Windows Exporter
+    - name: Install SW package 
       ansible.builtin.win_package:
         path: "C:\\Temp\\7z2409-x64.exe"
         arguments: "/quiet /norestart"
