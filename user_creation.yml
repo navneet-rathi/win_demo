@@ -108,8 +108,8 @@
         - "nrathi@redhat.com"
         subject: "Alert: Password Changed or Updated as per the org policy"
         body: "{{ lookup('file', '/tmp/alert_email.html') }}"
-        username: "{{ lookup('hashi_vault', 'secret=secret/data/dev/email:user') }}"
-        password: "{{ lookup('hashi_vault', 'secret=secret/data/dev/email:pass') }}"
+        username: "dmeonavneet@gmail.com"
+        password: "rbfqhoincpyouxqk"
       run_once: true  
       delegate_to: 127.0.0.1
       changed_when: True
