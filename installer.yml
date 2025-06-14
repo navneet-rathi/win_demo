@@ -1,0 +1,21 @@
+## INstall win 7z
+###
+#
+- name: Install & Configure  WIndows 7z
+  hosts: windows
+  tasks:
+    - name: Create Directory if it does not exist
+      ansible.builtin.win_file:
+        path: "C:\\Temp"
+        state: directory
+
+    - name: Download Windows Exporter
+      ansible.builtin.win_get_url:
+        url: "https://www.7-zip.org/a/7z2409-x64.exe"
+        dest: "C:\\Temp\\7z2409-x64.exe"
+
+    - name: Install Windows Exporter
+      ansible.builtin.win_package:
+        path: "C:\\Temp\\7z2409-x64.exe"
+        arguments: "/quiet /norestart"
+        state: present
