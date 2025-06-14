@@ -1,0 +1,30 @@
+---
+- name: Rename Guest account using local security policy
+  hosts: all
+  gather_facts: no
+  vars:
+    guest_name: rathi 
+  tasks:
+
+    - name: Create INF security template to rename Guest
+      ansible.windows.win_copy:
+        content: |
+          [Unicode]
+          Unicode=yes
+
+          [System Access]
+          NewGuestName = {{ guest_name }}
+
+          [Version]
+          signature="$CHICAGO$"
+          Revision=1
+        dest: C:\Temp\rename_guest.inf
+
+    - name: Apply the security template via secedit
+      ansible.windows.win_shell: |
+        secedit /configure /db C:\Windows\security\database\local.sdb /cfg C:\Temp\rename_guest.inf /areas SECURITYPOLICY
+
+    - name: Remove the temp template file
+      ansible.windows.win_file:
+        path: C:\Temp\rename_guest.inf
+        state: absent
