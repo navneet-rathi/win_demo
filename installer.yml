@@ -17,5 +17,5 @@
     - name: Install SW package 
       ansible.builtin.win_package:
         path: "C:\\Temp\\7z2409-arm64.exe"
-        arguments: "/quiet /norestart"
+        arguments: "/S"
         state: present
