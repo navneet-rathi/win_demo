@@ -6,3 +6,6 @@ collections:
   - name: ansible.windows
   - name: community.crypto
   - name: datadog.dd
+
+roles:
+ - name: datadog.dd
