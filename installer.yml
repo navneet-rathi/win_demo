@@ -11,11 +11,11 @@
 
     - name: Download Windows Software package
       ansible.builtin.win_get_url:
-        url: "https://www.7-zip.org/a/7z1900-x64.exe"
-        dest: "C:\\Temp\\7z1900-x64.exe"
+        url: "https://www.7-zip.org/a/7z2409-arm64.exe"
+        dest: "C:\\Temp\\7z2409-arm64.exe"
 
     - name: Install SW package 
       ansible.builtin.win_package:
-        path: "C:\\Temp\\7z1900-x64.exe"
+        path: "C:\\Temp\\7z2409-arm64.exe"
         arguments: "/quiet /norestart"
         state: present
