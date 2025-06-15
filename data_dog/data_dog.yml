@@ -7,4 +7,4 @@
   tasks:
     - name: Install Datadog Agent
       include_role:
-        name: datadog.dd.datadog_agent
+        name: datadog.dd.agent
