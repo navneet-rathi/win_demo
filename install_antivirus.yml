@@ -1,0 +1,28 @@
+---
+- name: Install ClamWin Antivirus on Windows
+  hosts: windows
+  vars:
+    clamwin_url: https://www.clamav.net/downloads/production/clamav-1.4.2.win.arm64.msi
+    installer_path: C:\Temp\clamwin_setup.exe
+
+  tasks:
+    - name: Create temp folder
+      ansible.windows.win_file:
+        path: C:\Temp
+        state: directory
+
+    - name: Download ClamWin installer
+      ansible.windows.win_get_url:
+        url: "{{ clamwin_url }}"
+        dest: "{{ installer_path }}"
+
+    - name: Install ClamWin silently
+      ansible.windows.win_package:
+        path: "{{ installer_path }}"
+        arguments: /SP- /VERYSILENT /NORESTART
+        state: present
+
+    - name: Remove installer (optional)
+      ansible.windows.win_file:
+        path: "{{ installer_path }}"
+        state: absent
