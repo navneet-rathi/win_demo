@@ -19,7 +19,7 @@
     - name: Install ClamWin silently
       ansible.windows.win_package:
         path: "{{ installer_path }}"
-        arguments: /SP- /VERYSILENT /NORESTART
+        arguments: /qn
         state: present
 
     - name: Remove installer (optional)
