@@ -1,6 +1,6 @@
 ---
 - name: Install Datadog Agent on Windows
-  hosts: windows_hosts
+  hosts: windows
   vars:
     datadog_api_key: "YOUR_DATADOG_API_KEY"
     datadog_site: "datadoghq.com"
