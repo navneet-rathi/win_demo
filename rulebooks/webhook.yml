@@ -67,7 +67,7 @@
             extra_vars:
               defender_action: 'disable'
 
-    - name: R7 - Windows defender is disabled
+    - name: R7 - Windows defender is Enabled
       condition: event.payload.action is defined and event.payload.action == "windows defender enable"
       action:
         run_job_template:
