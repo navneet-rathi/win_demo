@@ -8,12 +8,6 @@
     defender_action: "enable"  # Options: "disable" or "enable"
 
   tasks:
-    - name: Ensure that WinRM is started when the system has settled
-      ansible.windows.win_service:
-        name: WinRM
-        start_mode: auto
-        state: started
-
     - name: Display OS version
       debug:
         msg: "Windows Version: {{ ansible_distribution_version }}"
