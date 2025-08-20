@@ -5,5 +5,5 @@ collections:
   - name: ansible.posix
   - name: ansible.windows
   - name: community.crypto
-  - name: datadog.dd
+#  - name: datadog.dd
 

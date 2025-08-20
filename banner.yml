@@ -6,7 +6,7 @@
       ansible.windows.win_regedit:
         path: HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System
         name: LegalNoticeCaption
-        data: "State Bank of India Authorized Access Only"
+        data: "State Bank of India Authorized Access Only."
         type: String
       register: title
 
