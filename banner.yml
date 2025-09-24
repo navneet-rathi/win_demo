@@ -1,7 +1,8 @@
 ---
 - name: Set Windows Login Banner
   hosts: all
-  vars_files:
+  gather_facts: true
+  become: truexs
   tasks:
     - name: Set banner caption (title) for Windows
       ansible.windows.win_regedit:
