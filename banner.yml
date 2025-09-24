@@ -14,7 +14,11 @@
       ansible.windows.win_regedit:
         path: HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System
         name: LegalNoticeText
-        data: "This is a secure system of Central Bank of India. Unauthorized access is prohibited.This system is under the servelance and any auauthorized access will be reported.\n Powered by Ansible Automation Platform."
+        data: > 
+               This is a secure system of Central Bank of India.\n Unauthorized access is prohibited.
+               This system is under the servelance and any auauthorized access will be reported.\n 
+               Powered by Ansible Automation Platform.\n
+               Created by Navneet N. Rathi. 
         type: String
       register: content  
 
