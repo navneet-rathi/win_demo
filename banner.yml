@@ -35,9 +35,6 @@
     - name: Display the title change status
       ansible.builtin.debug:
         msg: "Banner title changed: {{ title.changed }}"
-
-    - name: ping the windows host
-      ansible.windows.win_ping:
-     
+      when: title.changed or content.changed
 
         
