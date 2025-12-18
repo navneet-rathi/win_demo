@@ -27,8 +27,8 @@
 
     - name: Reboot the machine
       ansible.windows.win_reboot:
-        reboot_timeout: 120
-        test_command: 'exit (Get-Service -Name Netlogon).Status -ne "Running"'
+        reboot_timeout: 60
+        #test_command: 'exit (Get-Service -Name Netlogon).Status -ne "Running"'
       when: title.changed or content.changed
       ignore_errors : true
 
