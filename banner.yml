@@ -31,6 +31,7 @@
         #test_command: 'exit (Get-Service -Name Netlogon).Status -ne "Running"'
       when: title.changed or content.changed
       ignore_errors : true
+      failed_when: false
 
     - name: Display the title change status
       ansible.builtin.debug:
