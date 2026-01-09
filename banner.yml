@@ -7,7 +7,7 @@
       ansible.windows.win_regedit:
         path: HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System
         name: LegalNoticeCaption
-        # data: "Motilal Oswal Financial Services Ltd (MOFSL) Authorized Access Only."
+        # data: "Company name Authorized Access Only."
         data: ""
         type: String
       register: title
@@ -17,7 +17,7 @@
         path: HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System
         name: LegalNoticeText
         # data: > 
-        #        This is a secure system ofMotilal Oswal Financial Services Ltd (MOFSL).\n
+        #        This is a secure system of Company Name.\n
         #        Unauthorized access is prohibited.
         #        This system is under the servelance and any auauthorized access will be reported.\n 
         #        Powered by Ansible Automation Platform.\n
