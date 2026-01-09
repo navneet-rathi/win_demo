@@ -7,8 +7,8 @@
       ansible.windows.win_regedit:
         path: HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System
         name: LegalNoticeCaption
-        # data: "Company name Authorized Access Only."
-        data: ""
+        data: "Company name Authorized Access Only."
+       # data: ""
         type: String
       register: title
 
@@ -16,14 +16,14 @@
       ansible.windows.win_regedit:
         path: HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System
         name: LegalNoticeText
-        # data: > 
-        #        This is a secure system of Company Name.\n
-        #        Unauthorized access is prohibited.
-        #        This system is under the servelance and any auauthorized access will be reported.\n 
-        #        Powered by Ansible Automation Platform.\n
-        #        This Msg is Publish and Created by RedHat Ansible automation Platform.
-        #
-        data : ""       
+        data: > 
+               This is a secure system of Company Name.\n
+               Unauthorized access is prohibited.
+               This system is under the servelance and any auauthorized access will be reported.\n 
+               Powered by Ansible Automation Platform.\n
+               This Msg is Publish and Created by RedHat Ansible automation Platform.
+        
+        #data : ""       
         type: String
       register: content  
 
