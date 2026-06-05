@@ -43,9 +43,8 @@
         to: "{{ rx }}"
         subject: "Alert: cert for {{ site_url }} is expiring in {{ expire_days }} days"
         body: "{{ lookup('file', '/tmp/alert_email.html') }}"
-        username: "dmeonavneet@gmail.com"
-        password: "rbfqhoincpyouxqk"
+        username: "{{email_user}}"
+        password: "{{email_pass}}"
       when: expire_days | int <= "{{ worn }}"| int
       vars:
         expire_days: "{{ (( cert.not_after | to_datetime('%Y%m%d%H%M%SZ')) - (ansible_date_time.iso8601 | to_datetime('%Y-%m-%dT%H:%M:%SZ')) ).days }}"        
-      
